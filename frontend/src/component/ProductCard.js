@@ -42,7 +42,7 @@ const styles = {
   },
   image: {
     width: "100%",
-    height: "auto",
+    height: "166px",
     borderRadius: "8px",
   },
   title: {

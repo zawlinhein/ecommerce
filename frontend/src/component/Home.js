@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { allProducts } from "./productSlice";
-import { useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import ProductCard from "./ProductCard";
 
@@ -13,7 +12,6 @@ const Home = () => {
     return item.title.toLowerCase().includes(searchText.toLowerCase());
   });
 
-  const navigate = useNavigate();
   const RenderProducts = () => {
     return (
       <>

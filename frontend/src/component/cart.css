@@ -23,7 +23,7 @@
 }
 
 .item-details {
-  flex: 1; /* Takes remaining space */
+  flex: 1;
 }
 
 .quantity-control {

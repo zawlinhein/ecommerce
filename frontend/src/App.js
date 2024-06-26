@@ -8,7 +8,7 @@ import axios from "axios";
 import { setProduct } from "./component/productSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { RequireToken } from "./component/Auth";
+import { RequireAuth } from "./component/RequireAuth";
 
 function App() {
   const DetailPage = lazy(() => import("./component/DetailPage"));
@@ -17,6 +17,7 @@ function App() {
   const Register = lazy(() => import("./component/Register"));
   const Profile = lazy(() => import("./component/Profile"));
   const Cart = lazy(() => import("./component/Cart"));
+  const AdminDashboard = lazy(() => import("./component/AdminDashboard"));
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -46,12 +47,20 @@ function App() {
           <Route
             path="/profile"
             element={
-              <RequireToken>
-                <Profile></Profile>
-              </RequireToken>
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
             }
           />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route
+            path="/admin"
+            element={
+              <RequireAuth role="admin">
+                <AdminDashboard />
+              </RequireAuth>
+            }
+          />
+          <Route path="/*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </>

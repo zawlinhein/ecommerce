@@ -4,6 +4,7 @@ from models.product import product,update_product
 from config.database import collection
 from bson import ObjectId
 
+
 router=APIRouter()
 
 @router.get("/")
@@ -18,8 +19,8 @@ async def get_products():
     return res
 
 @router.get("/get/{_id}")
-async def get_one_product(_id):
-    res=serialize_one(collection.find({"_id":ObjectId(_id)}))
+async def get_one_product(_id:str):
+    res=collection.find({"_id":ObjectId(_id)})
     return res
 
 @router.post("/post")

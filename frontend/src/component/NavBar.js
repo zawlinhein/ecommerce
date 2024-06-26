@@ -31,6 +31,9 @@ const Navbar = () => {
         <li>
           <Link to="/profile">Profile</Link>
         </li>
+        <li>
+          <Link to="/admin">admin</Link>
+        </li>
       </ul>
       <div className="navbar-cart" onClick={() => navigate("/cart")}>
         <FaShoppingCart />

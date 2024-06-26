@@ -5,3 +5,5 @@ client=MongoClient("mongodb+srv://zawlinhein:GTGreen666@cluster0.y1r29u8.mongodb
 db=client.dummy
 
 collection=db["products"]
+
+user_collection=db["users"]

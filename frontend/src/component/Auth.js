@@ -1,20 +1,42 @@
-import { useLocation, Navigate } from "react-router-dom";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 export const setToken = (token) => {
-  localStorage.setItem("temitope", token); // make up your own token
+  localStorage.setItem("authToken", token);
 };
 
-export const fetchToken = (token) => {
-  return localStorage.getItem("temitope");
+export const fetchToken = () => {
+  return localStorage.getItem("authToken");
 };
 
-export function RequireToken({ children }) {
-  let auth = fetchToken();
-  let location = useLocation();
+export const fetchUserRole = () => {
+  const token = fetchToken();
+  if (token) {
+    const decoded = jwtDecode(token);
+    return decoded.role;
+  }
+  return null;
+};
 
-  if (!auth) {
-    return <Navigate to="/" state={{ from: location }} />;
+export const validateToken = async () => {
+  const token = fetchToken();
+  if (!token) {
+    return false;
   }
 
-  return children;
-}
+  try {
+    const response = await axios.get("http://localhost:8000/validate-token", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Token validation failed", error);
+  }
+
+  return false;
+};
