@@ -20,7 +20,7 @@ async def get_products():
 
 @router.get("/get/{_id}")
 async def get_one_product(_id:str):
-    res=collection.find({"_id":ObjectId(_id)})
+    res=serialize_one(collection.find_one({"_id":ObjectId(_id)}))
     return res
 
 @router.post("/post")

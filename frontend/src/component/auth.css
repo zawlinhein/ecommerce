@@ -82,7 +82,7 @@ button:disabled {
   opacity: 0.6;
 }
 /* Error message paragraph */
-p {
+.err {
   color: red;
   margin: 10px 0;
 }

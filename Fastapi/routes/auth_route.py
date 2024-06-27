@@ -4,6 +4,7 @@ from jose import JWTError, jwt
 from models.user import LoginItem
 from config.database import user_collection
 from passlib.context import CryptContext
+from schemas.user_schema import user_serialize
 
 auth_router = APIRouter()
 
@@ -38,7 +39,17 @@ async def validate_token(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-@auth_router.get("/admin-data")
+@auth_router.get("/get-user-data")
+async def get_user_data(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECERT_KEY, algorithms=[ALGORITHM])
+        user = user_collection.find_one({"username": payload.get("username")})
+        user= user_serialize(user)
+        return user
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+""" @auth_router.get("/admin-data")
 async def get_admin_data(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECERT_KEY, algorithms=[ALGORITHM])
@@ -46,13 +57,14 @@ async def get_admin_data(token: str = Depends(oauth2_scheme)):
             raise HTTPException(status_code=403, detail="Not authorized")
         return {"admin_data": "This is protected admin data"}
     except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid token")
+        raise HTTPException(status_code=401, detail="Invalid token") """
 
 @auth_router.post("/register")
 async def add_user(registerData: LoginItem):
     data=dict(registerData)
     data["password"]=get_password_hash(data["password"])
     data["role"] = "luu"
+    data["purchased_products"]= []
     user_collection.insert_one(data)
     return {
         "status": "ok"

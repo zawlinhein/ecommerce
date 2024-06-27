@@ -1,33 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { cartItems, updateCart, setQty, setStock } from "./productSlice";
+import {
+  cartItems,
+  updateCart,
+  setQty,
+  setStock,
+  loginFlag,
+  toggleLoginFlag,
+} from "./productSlice";
 import axios from "axios";
 import "./cart.css";
 import { useNavigate } from "react-router-dom";
+import { validateToken } from "./Auth";
 
 const Cart = () => {
+  useEffect(() => {
+    const checkToken = async () => {
+      const data = await validateToken();
+      if (data) {
+        dispatch(toggleLoginFlag(true));
+      } else dispatch(toggleLoginFlag(false));
+    };
+    checkToken();
+  }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const itemsInCart = useSelector(cartItems);
+  const flag = useSelector(loginFlag);
 
-  /////quantity increase or decrease
-  /*   const initialQuantity = [];
-  itemsInCart.forEach((item) => {
-    initialQuantity[item.id] = 1;
-  });
-  const [quantity, setQuantiy] = useState(initialQuantity);
-  const increaseQty = (itemId) => {
-    setQuantiy((prev) => ({
-      ...prev,
-      [itemId]: prev[itemId] + 1,
-    }));
-  };
-  const decreaseQty = (itemId) => {
-    setQuantiy((prev) => ({
-      ...prev,
-      [itemId]: prev[itemId] - 1,
-    }));
-  }; */
   const changeQty = (sign, qty, productId) => {
     if (sign === "+") {
       const newQty = qty + 1;
@@ -101,7 +101,11 @@ const Cart = () => {
         Total Price: ${calculateTotalPrice().toFixed(2)}
       </div>
       <div className="checkout-buttons">
-        <button onClick={handleCheckout}>Checkout</button>
+        {flag ? (
+          <button onClick={handleCheckout}>Checkout</button>
+        ) : (
+          <button onClick={() => navigate("/login")}>Login</button>
+        )}
         <button onClick={() => navigate("/")}>Continue Shopping</button>
       </div>
     </div>

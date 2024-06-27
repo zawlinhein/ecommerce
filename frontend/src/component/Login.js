@@ -23,8 +23,6 @@ const Login = () => {
         password: passwd,
       })
       .then(function (response) {
-        console.log(response.data.token, "response.data.token");
-        console.log(response.data.decodedData, "response.data.decodedData");
         if (response.data.token) {
           setToken(response.data.token);
           navigate("/profile");

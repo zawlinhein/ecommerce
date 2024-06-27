@@ -40,3 +40,26 @@ export const validateToken = async () => {
 
   return false;
 };
+
+export const getUserData = async () => {
+  const token = fetchToken();
+  if (!token) {
+    return false;
+  }
+
+  try {
+    const response = await axios.get("http://localhost:8000/get-user-data", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Can't get user data", error);
+  }
+
+  return false;
+};
