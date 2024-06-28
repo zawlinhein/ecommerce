@@ -77,6 +77,7 @@ const Register = () => {
             type="text"
             ref={userRef}
             id="username"
+            className="auth-input"
             autoComplete="off"
             onChange={(e) => setUser(e.target.value)}
             value={user}
@@ -111,6 +112,7 @@ const Register = () => {
             type="password"
             required
             id="password"
+            className="auth-input"
             onChange={(e) => setPw(e.target.value)}
             value={pw}
             aria-invalid={validPw ? "false" : "true"}
@@ -146,6 +148,7 @@ const Register = () => {
           <input
             type="password"
             id="confirm_pwd"
+            className="auth-input"
             onChange={(e) => setMatchPw(e.target.value)}
             value={matchPw}
             required

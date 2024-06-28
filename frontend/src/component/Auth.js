@@ -67,3 +67,7 @@ export const getUserData = async () => {
 
   return false;
 };
+
+export const checkData = async () => {
+  const data = await getUserData();
+};

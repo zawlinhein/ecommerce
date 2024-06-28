@@ -3,10 +3,13 @@ import "./auth.css";
 import axios from "axios";
 import { setToken } from "./Auth";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toggleLoginFlag } from "./productSlice";
 
 const Login = () => {
   const [usrName, setUsrName] = useState("");
   const [passwd, setPasswd] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const usrRef = useRef();
@@ -26,6 +29,7 @@ const Login = () => {
         if (response.data.token) {
           setToken(response.data.token);
           navigate("/profile");
+          dispatch(toggleLoginFlag(true));
         }
       })
       .catch(function (error) {
@@ -42,6 +46,7 @@ const Login = () => {
             type="text"
             ref={usrRef}
             id="username"
+            className="auth-input"
             onChange={(e) => setUsrName(e.target.value)}
             value={usrName}
             autoComplete="off"
@@ -51,6 +56,7 @@ const Login = () => {
           <input
             type="password"
             id="password"
+            className="auth-input"
             onChange={(e) => setPasswd(e.target.value)}
             value={passwd}
             required

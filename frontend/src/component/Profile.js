@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { getUserData, removeToken } from "./Auth";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleLoginFlag } from "./productSlice";
+import { currentUser } from "./userSlice";
 
 const Profile = () => {
-  const [userData, setUserData] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const checkData = async () => {
-      const data = await getUserData();
-      setUserData(data);
-    };
-    checkData();
-  }, []);
-
+  const userData = useSelector(currentUser);
   console.log(userData, "USER DATA");
 
   const handleLogout = () => {
     removeToken();
+    dispatch(toggleLoginFlag(false));
     navigate("/");
   };
   if (!userData.purchased_products) return <div>Loading...</div>;
