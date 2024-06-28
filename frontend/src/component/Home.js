@@ -25,13 +25,7 @@ const Home = () => {
           }}
         >
           {filterItems.map((product) => (
-            <>
-              <ProductCard product={product} key={product.id} />
-              {/*  <p style={{ padding: "10px" }}>{product.title}</p>
-            <button onClick={() => navigate(`/products/${product.id}`)}>
-              View Detail
-            </button> */}
-            </>
+            <ProductCard product={product} key={product.id} />
           ))}
         </div>
       </>

@@ -9,6 +9,10 @@ export const fetchToken = () => {
   return localStorage.getItem("authToken");
 };
 
+export const removeToken = () => {
+  return localStorage.removeItem("authToken");
+};
+
 export const fetchUserRole = () => {
   const token = fetchToken();
   if (token) {

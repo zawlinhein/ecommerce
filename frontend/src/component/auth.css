@@ -59,7 +59,7 @@ input {
 }
 
 /* Submit button */
-button {
+.auth-button {
   width: 100%;
   padding: 10px;
   border: none;
@@ -72,11 +72,11 @@ button {
 }
 
 /* Button hover effect */
-button:hover {
+.auth-button:hover {
   background: #4cae4c;
 }
 
-button:disabled {
+.auth-button:disabled {
   background: #cccccc;
   cursor: not-allowed;
   opacity: 0.6;

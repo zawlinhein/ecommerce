@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getUserData } from "./Auth";
+import { getUserData, removeToken } from "./Auth";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
+  const navigate = useNavigate();
+
   useEffect(() => {
     const checkData = async () => {
       const data = await getUserData();
@@ -12,7 +15,12 @@ const Profile = () => {
   }, []);
 
   console.log(userData, "USER DATA");
-  if (!userData || !userData.purchased_products) return <div>Loading...</div>;
+
+  const handleLogout = () => {
+    removeToken();
+    navigate("/");
+  };
+  if (!userData.purchased_products) return <div>Loading...</div>;
   return (
     <div>
       <p>Username: {userData.username}</p>
@@ -27,6 +35,7 @@ const Profile = () => {
       ) : (
         <p>no item</p>
       )}
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };

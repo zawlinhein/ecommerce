@@ -5,10 +5,15 @@ import { Suspense, lazy } from "react";
 import Home from "./component/Home";
 import Loading from "./component/Loading";
 import axios from "axios";
-import { setProduct } from "./component/productSlice";
-import { useDispatch } from "react-redux";
+import {
+  loginFlag,
+  setProduct,
+  toggleLoginFlag,
+} from "./component/productSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { RequireAuth } from "./component/RequireAuth";
+import { validateToken } from "./component/Auth";
 
 function App() {
   const DetailPage = lazy(() => import("./component/DetailPage"));
@@ -32,8 +37,20 @@ function App() {
       }
     };
 
+    const checkToken = async () => {
+      const data = await validateToken();
+      if (data) {
+        dispatch(toggleLoginFlag(true));
+      } else dispatch(toggleLoginFlag(false));
+    };
+
+    checkToken();
+
     fetchData();
   }, [dispatch]);
+
+  const Flag = useSelector(loginFlag);
+  console.log(Flag, "Login Flag");
 
   return (
     <>

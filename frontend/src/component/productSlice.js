@@ -27,6 +27,17 @@ const productSlice = createSlice({
         ),
       };
     },
+    editProduct(state, action) {
+      const { id, editStock, editPrice } = action.payload;
+      return {
+        ...state,
+        products: state.products.map((product) =>
+          product.id === Number(id)
+            ? { ...product, stock: editStock, price: editPrice }
+            : product
+        ),
+      };
+    },
     addToCart: {
       reducer(state, action) {
         return {
@@ -76,6 +87,7 @@ export const {
   updateCart,
   setQty,
   toggleLoginFlag,
+  editProduct,
 } = productSlice.actions;
 
 export const allProducts = (state) => state.products.products;

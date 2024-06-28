@@ -2,9 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from models.user import LoginItem
-from config.database import user_collection
+from models.product import update_product
+from config.database import user_collection,collection
 from passlib.context import CryptContext
 from schemas.user_schema import user_serialize
+from bson import ObjectId
 
 auth_router = APIRouter()
 
@@ -36,6 +38,22 @@ async def validate_token(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECERT_KEY, algorithms=[ALGORITHM])
         return {"username": payload.get("username"), "role": payload.get("role")}
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    
+@auth_router.put("/edit-product/{_id}")
+async def validate_token(_id,data:update_product,token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECERT_KEY, algorithms=[ALGORITHM])
+        if payload.get("role")!="admin":
+            raise HTTPException(status_code=403, detail="Insufficient permissions")
+        data=dict(data.model_dump(exclude_unset=True))
+        collection.find_one_and_update(
+            {"_id": ObjectId(_id)},
+            {"$set": data},
+            return_document=True 
+        )   
+        return {"status":"ok"}
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 

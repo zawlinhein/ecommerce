@@ -6,23 +6,12 @@ import {
   setQty,
   setStock,
   loginFlag,
-  toggleLoginFlag,
 } from "./productSlice";
 import axios from "axios";
 import "./cart.css";
 import { useNavigate } from "react-router-dom";
-import { validateToken } from "./Auth";
 
 const Cart = () => {
-  useEffect(() => {
-    const checkToken = async () => {
-      const data = await validateToken();
-      if (data) {
-        dispatch(toggleLoginFlag(true));
-      } else dispatch(toggleLoginFlag(false));
-    };
-    checkToken();
-  }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const itemsInCart = useSelector(cartItems);
