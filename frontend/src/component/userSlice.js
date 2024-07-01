@@ -8,10 +8,22 @@ const userSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    purchaseProucts(state, action) {
+    setUserInfo(state, action) {
       return {
         ...state,
         currentUser: action.payload,
+      };
+    },
+    addPurchasedItems(state, action) {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          purchased_history: [
+            ...state.currentUser.purchased_history,
+            action.payload,
+          ],
+        },
       };
     },
   },
@@ -19,6 +31,6 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-export const {} = userSlice.actions;
+export const { setUserInfo, addPurchasedItems } = userSlice.actions;
 
 export const currentUser = (state) => state.users.currentUser;

@@ -29,7 +29,7 @@ export const validateToken = async () => {
   }
 
   try {
-    const response = await axios.get("http://localhost:8000/validate-token", {
+    const response = await axios.get("http://localhost:8000/get-user-data", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

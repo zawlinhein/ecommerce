@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from models.user import LoginItem
+from models.user import LoginItem,invoice
 from models.product import update_product
 from config.database import user_collection,collection
 from passlib.context import CryptContext
@@ -67,23 +67,27 @@ async def get_user_data(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-""" @auth_router.get("/admin-data")
-async def get_admin_data(token: str = Depends(oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, SECERT_KEY, algorithms=[ALGORITHM])
-        if payload.get("role") != "admin":
-            raise HTTPException(status_code=403, detail="Not authorized")
-        return {"admin_data": "This is protected admin data"}
-    except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid token") """
-
 @auth_router.post("/register")
 async def add_user(registerData: LoginItem):
     data=dict(registerData)
     data["password"]=get_password_hash(data["password"])
     data["role"] = "luu"
-    data["purchased_products"]= []
+    data["purchased_history"]= []
     user_collection.insert_one(data)
     return {
         "status": "ok"
+    }
+
+@auth_router.put("/add-invoice/{_id}")
+async def update_invoice(_id,data:invoice):
+    items_filtered = [{"title": item.title, "qty": item.qty} for item in data.items]
+    
+    invoice_data = {
+        "date": data.date,
+        "totalPrice": data.totalPrice,
+        "items": items_filtered
+    }
+    user_collection.find_one_and_update({"_id":ObjectId(_id)},{"$push": {"purchased_history":invoice_data}})
+    return{
+        "status":"ok"
     }

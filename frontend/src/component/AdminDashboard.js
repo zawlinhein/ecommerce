@@ -16,34 +16,36 @@ const AdminDashboard = () => {
   return (
     <div>
       <table className="product-table">
-        {productList.map((item) =>
-          editId === item.id ? (
-            <Edit
-              title={item.title}
-              stock={item.stock}
-              price={item.price}
-              setId={setEditId}
-              id={item.id}
-              _id={item._id}
-              key={item.id}
-            />
-          ) : (
-            <tr key={item.id}>
-              <td>{item.title}</td>
-              <td className="input-column">{item.stock}</td>
-              <td className="price-column">{item.price}</td>
-              <td className="action-column">
-                <button
-                  className="action-button"
-                  onClick={() => handleEdit(item.id)}
-                >
-                  Edit
-                </button>
-                <button className="action-button">Delete</button>
-              </td>
-            </tr>
-          )
-        )}
+        <tbody>
+          {productList.map((item) =>
+            editId === item.id ? (
+              <Edit
+                title={item.title}
+                stock={item.stock}
+                price={item.price}
+                setId={setEditId}
+                id={item.id}
+                _id={item._id}
+                key={item.id}
+              />
+            ) : (
+              <tr key={item.id}>
+                <td>{item.title}</td>
+                <td className="input-column">{item.stock}</td>
+                <td className="price-column">{item.price}</td>
+                <td className="action-column">
+                  <button
+                    className="action-button"
+                    onClick={() => handleEdit(item.id)}
+                  >
+                    Edit
+                  </button>
+                  <button className="action-button">Delete</button>
+                </td>
+              </tr>
+            )
+          )}
+        </tbody>
       </table>
     </div>
   );

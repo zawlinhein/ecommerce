@@ -10,10 +10,13 @@ import {
 import axios from "axios";
 import "./cart.css";
 import { useNavigate } from "react-router-dom";
+import { currentUser } from "./userSlice";
+import { addPurchasedItems } from "./userSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userData = useSelector(currentUser);
   const itemsInCart = useSelector(cartItems);
   const flag = useSelector(loginFlag);
 
@@ -36,18 +39,46 @@ const Cart = () => {
     return totalPrice;
   };
 
+  const getCurrentDate = () => {
+    const date = new Date();
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  };
+
   const handleCheckout = (e) => {
     itemsInCart.map((item) => {
       const newStock = item.stock - item.qty;
       const productId = item.id;
       axios
         .put(`http://localhost:8000/put/${item._id}`, { stock: newStock })
-        .then((res) => dispatch(setStock({ newStock, productId })))
+        .then((res) => {
+          dispatch(setStock({ newStock, productId }));
+        })
         .catch((error) => {
           alert("Failed to update resource. Please try again.");
           console.log(error);
         });
     });
+
+    const filteredItems = itemsInCart.map((item) => ({
+      title: item.title,
+      qty: item.qty,
+    }));
+    const invoice = {
+      date: getCurrentDate(),
+      totalPrice: calculateTotalPrice(),
+      items: filteredItems,
+    };
+    axios
+      .put(`http://localhost:8000/add-invoice/${userData._id}`, invoice)
+      .then((res) => {
+        dispatch(addPurchasedItems({ invoice }));
+      })
+      .catch((error) => {
+        alert("Failed to update resource. Please try again.");
+        console.log(error);
+      });
+
     dispatch(updateCart([]));
     navigate("/");
   };
