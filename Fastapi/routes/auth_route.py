@@ -30,7 +30,8 @@ async def user_login(loginitem: LoginItem):
     if user and verify_password(loginitem.password,user["password"]):
         token_data = {"username": loginitem.username, "role": user["role"]}
         token = jwt.encode(token_data, SECERT_KEY, algorithm=ALGORITHM)
-        return {"token": token}
+        user=user_serialize(user)
+        return {"token": token,"userData":user}
     raise HTTPException(status_code=400, detail="Invalid username or password")
 
 @auth_router.get("/validate-token")

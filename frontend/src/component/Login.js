@@ -5,6 +5,7 @@ import { setToken } from "./Auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleLoginFlag } from "./productSlice";
+import { setUserInfo } from "./userSlice";
 
 const Login = () => {
   const [usrName, setUsrName] = useState("");
@@ -30,6 +31,7 @@ const Login = () => {
           setToken(response.data.token);
           navigate("/profile");
           dispatch(toggleLoginFlag(true));
+          dispatch(setUserInfo(response.data.userData));
         }
       })
       .catch(function (error) {

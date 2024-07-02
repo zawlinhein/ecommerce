@@ -72,7 +72,7 @@ const Cart = () => {
     axios
       .put(`http://localhost:8000/add-invoice/${userData._id}`, invoice)
       .then((res) => {
-        dispatch(addPurchasedItems({ invoice }));
+        dispatch(addPurchasedItems(invoice));
       })
       .catch((error) => {
         alert("Failed to update resource. Please try again.");

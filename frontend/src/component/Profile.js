@@ -3,18 +3,19 @@ import { removeToken } from "./Auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleLoginFlag } from "./productSlice";
-import { currentUser } from "./userSlice";
+import { currentUser, setUserInfo } from "./userSlice";
 
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector(currentUser);
 
-  console.log(userData, "USER DATA");
+  console.log({ userData: userData });
 
   const handleLogout = () => {
     removeToken();
     dispatch(toggleLoginFlag(false));
+    dispatch(setUserInfo({}));
     navigate("/");
   };
 
