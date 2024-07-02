@@ -2,11 +2,14 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import "./navbar.css";
-import { cartItems } from "./productSlice";
+import { cartItems, loginFlag } from "./productSlice";
 import { useSelector } from "react-redux";
+import { currentUser } from "./userSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const flag = useSelector(loginFlag);
+  const userData = useSelector(currentUser);
   const itemNum = useSelector(cartItems).length;
   return (
     <nav className="navbar">
@@ -22,18 +25,25 @@ const Navbar = () => {
         <li>
           <Link to="/products">Products</Link>
         </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/register">Register</Link>
-        </li>
-        <li>
-          <Link to="/profile">Profile</Link>
-        </li>
-        <li>
-          <Link to="/admin">admin</Link>
-        </li>
+        {flag ? (
+          <li>
+            <Link to="/profile">Profile</Link>
+          </li>
+        ) : (
+          <>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
+          </>
+        )}
+        {userData.role === "admin" && (
+          <li>
+            <Link to="/admin">admin</Link>
+          </li>
+        )}
       </ul>
       <div className="navbar-cart" onClick={() => navigate("/cart")}>
         <FaShoppingCart />

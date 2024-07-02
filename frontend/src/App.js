@@ -6,7 +6,7 @@ import Home from "./component/Home";
 import Loading from "./component/Loading";
 import axios from "axios";
 import { setProduct, toggleLoginFlag } from "./component/productSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { RequireAuth } from "./component/RequireAuth";
 import { validateToken } from "./component/Auth";
@@ -36,7 +36,6 @@ function App() {
 
     const checkToken = async () => {
       const data = await validateToken();
-      console.log(data);
       if (data) {
         dispatch(setUserInfo(data));
         dispatch(toggleLoginFlag(true));

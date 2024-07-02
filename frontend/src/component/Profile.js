@@ -10,8 +10,6 @@ const Profile = () => {
   const dispatch = useDispatch();
   const userData = useSelector(currentUser);
 
-  console.log({ userData: userData });
-
   const handleLogout = () => {
     removeToken();
     dispatch(toggleLoginFlag(false));
@@ -20,7 +18,7 @@ const Profile = () => {
   };
 
   // Initial loading state
-  if (!userData || Object.keys(userData).length === 0) {
+  if (!userData) {
     return <div>Loading...</div>;
   }
 

@@ -27,12 +27,14 @@ def get_password_hash(password):
 async def user_login(loginitem: LoginItem):
     """ user = users.get(loginitem.username) """
     user = user_collection.find_one({"username": loginitem.username})
+    if user is None:
+        raise HTTPException(status_code=404,detail="Username not found")
     if user and verify_password(loginitem.password,user["password"]):
         token_data = {"username": loginitem.username, "role": user["role"]}
         token = jwt.encode(token_data, SECERT_KEY, algorithm=ALGORITHM)
         user=user_serialize(user)
         return {"token": token,"userData":user}
-    raise HTTPException(status_code=400, detail="Invalid username or password")
+    raise HTTPException(status_code=401, detail="Invalid password")
 
 @auth_router.get("/validate-token")
 async def validate_token(token: str = Depends(oauth2_scheme)):
@@ -71,6 +73,9 @@ async def get_user_data(token: str = Depends(oauth2_scheme)):
 @auth_router.post("/register")
 async def add_user(registerData: LoginItem):
     data=dict(registerData)
+    user = user_collection.find_one({"username": data["username"]})
+    if user is not None:
+        raise HTTPException(status_code=409,detail="Username Taken")
     data["password"]=get_password_hash(data["password"])
     data["role"] = "luu"
     data["purchased_history"]= []

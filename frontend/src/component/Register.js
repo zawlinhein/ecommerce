@@ -54,18 +54,28 @@ const Register = () => {
         username: user,
         password: pw,
       })
-      .then(function (response) {
+      .then((response) => {
         navigate("/login");
       })
-      .catch(function (error) {
-        console.log(error, "error");
+      .catch((error) => {
+        if (!error.response) {
+          setErrMessage("No Server Response!");
+        } else if (error.response?.status === 409) {
+          setErrMessage("Username Taken!");
+          userRef.current.focus();
+        } else {
+          setErrMessage("Registration Failed");
+        }
+        errRef.current.focus();
       });
   };
 
   return (
     <div className="register-container">
       <section>
-        <p ref={errRef}>{errMessage}</p>
+        <p ref={errRef} className="err">
+          {errMessage}
+        </p>
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
           <label htmlFor="username" className="bellay">
@@ -143,7 +153,7 @@ const Register = () => {
           <label htmlFor="confirm_pwd" className="bellay">
             Confirm Password:
             <FaCheck className={validMatch && matchPw ? "valid" : "hide"} />
-            <FaTimes className={validPw || !pw ? "hide" : "invalid"} />
+            <FaTimes className={validMatch || !matchPw ? "hide" : "invalid"} />
           </label>
           <input
             type="password"

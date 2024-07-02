@@ -15,7 +15,5 @@ class product(BaseModel):
     rating:float
 
 class update_product(BaseModel):
-    title:str=None
-    description:str=None
     price:float=None
     stock:int=None

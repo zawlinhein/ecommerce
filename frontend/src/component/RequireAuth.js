@@ -15,8 +15,12 @@ export function RequireAuth({ children, role }) {
         setIsValid(false);
       }
     };
+
+    setIsValid(null);
     checkToken();
   }, [role]);
+
+  console.log({ isValid });
 
   if (isValid === null) {
     return <div>Loading...</div>;
