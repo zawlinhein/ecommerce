@@ -31,6 +31,8 @@ const DetailPage = () => {
     description: selectedProduct.description,
   };
 
+  console.log(productDetailItem.images);
+
   const addToCartAction = (e) => {
     const productInCart = itemsInCart.find(
       (item) => item.id === selectedProduct.id

@@ -1,8 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,UploadFile,File,Form
 from schemas.schema import serialize_all,serialize_one
 from models.product import product,update_product
 from config.database import collection
 from bson import ObjectId
+import os
+from pathlib import Path
 
 
 router=APIRouter()
@@ -45,3 +47,44 @@ async def delete_product(_id):
     return{
         "status":"ok"
     }
+
+
+UPLOAD_FOLDER = "uploads"
+Path(UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
+
+@router.post("/upload")
+async def upload_file(file: UploadFile = File(...),
+    id: int = Form(...),
+    title: str = Form(...),
+    description: str = Form(...),
+    price: float = Form(...),
+    stock: int = Form(...),
+    sku: str = Form(...),
+    category: str = Form(...),
+    brand: str = Form(...),
+    rating: float = Form(...)
+):
+
+    file_location = os.path.join(UPLOAD_FOLDER, file.filename)  
+    with open(file_location, "wb+") as file_object:
+        file_object.write(file.file.read())
+    file_url = f"http://localhost:8000/{file_location}"
+
+    product_data = product(
+            id=id,
+            title=title,
+            description=description,
+            price=price,
+            stock=stock,
+            images=[file_url],
+            thumbnail=file_url,
+            sku=sku,
+            category=category,
+            brand=brand,
+            rating=rating
+        )
+
+    product_data=dict(product_data)
+    collection.insert_one(product_data)
+    return {"filename": file.filename, "path": file_url}
+

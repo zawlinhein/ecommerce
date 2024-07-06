@@ -73,10 +73,10 @@ const Register = () => {
   return (
     <div className="register-container">
       <section>
-        <p ref={errRef} className="err">
+        <p ref={errRef} className="text-red-600 text-center">
           {errMessage}
         </p>
-        <h1>Register</h1>
+        <h1 className="mb-5 text-center font-bold text-xl">Register</h1>
         <form onSubmit={handleSubmit}>
           <label htmlFor="username" className="bellay">
             Username:

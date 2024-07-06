@@ -57,10 +57,10 @@ const Login = () => {
   return (
     <div className="register-container">
       <section>
-        <p ref={errRef} className="err">
+        <p ref={errRef} className="text-red-600 text-center">
           {errMessage}
         </p>
-        <h1>Login</h1>
+        <h1 className="mb-5 text-center font-bold text-xl">Login</h1>
         <form onSubmit={handleSubmit}>
           <label htmlFor="username">Username:</label>
           <input

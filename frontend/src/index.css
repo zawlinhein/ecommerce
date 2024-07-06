@@ -1,8 +1,8 @@
-@import "~react-image-gallery/styles/css/image-gallery.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "~react-image-gallery/styles/css/image-gallery.css";
 /* styles.css */
 :root {
   --gold: #fde047;

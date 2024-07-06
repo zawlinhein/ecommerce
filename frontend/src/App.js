@@ -20,6 +20,7 @@ function App() {
   const Profile = lazy(() => import("./component/Profile"));
   const Cart = lazy(() => import("./component/Cart"));
   const AdminDashboard = lazy(() => import("./component/AdminDashboard"));
+  const AddProduct = lazy(() => import("./component/AddProduct"));
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/addProduct" element={<AddProduct />} />
           <Route
             path="/profile"
             element={

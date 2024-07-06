@@ -26,8 +26,8 @@
 
 .input-column input,
 .price-column input {
-  width: 100%; /* Ensure input fields take up the entire cell width */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  width: 100%;
+  box-sizing: border-box;
   border: 1px solid red;
 }
 
