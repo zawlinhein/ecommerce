@@ -21,18 +21,16 @@ const productSlice = createSlice({
       return {
         ...state,
         products: state.products.map((product) =>
-          product.id === Number(productId)
-            ? { ...product, stock: newStock }
-            : product
+          product._id === productId ? { ...product, stock: newStock } : product
         ),
       };
     },
     editProduct(state, action) {
-      const { id, editStock, editPrice } = action.payload;
+      const { _id, editStock, editPrice } = action.payload;
       return {
         ...state,
         products: state.products.map((product) =>
-          product.id === Number(id)
+          product._id === _id
             ? { ...product, stock: editStock, price: editPrice }
             : product
         ),

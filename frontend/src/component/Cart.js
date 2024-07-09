@@ -6,12 +6,12 @@ import {
   setQty,
   setStock,
   loginFlag,
-} from "./productSlice";
+} from "./slice/productSlice";
 import axios from "axios";
 import "./cart.css";
 import { useNavigate } from "react-router-dom";
-import { currentUser } from "./userSlice";
-import { addPurchasedItems } from "./userSlice";
+import { currentUser } from "./slice/userSlice";
+import { addPurchasedItems } from "./slice/userSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const Cart = () => {
   const handleCheckout = (e) => {
     itemsInCart.map((item) => {
       const newStock = item.stock - item.qty;
-      const productId = item.id;
+      const productId = item._id;
       axios
         .put(`http://localhost:8000/put/${item._id}`, { stock: newStock })
         .then((res) => {

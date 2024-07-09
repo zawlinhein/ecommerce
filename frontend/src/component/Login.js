@@ -4,8 +4,8 @@ import axios from "axios";
 import { setToken } from "./Auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { toggleLoginFlag } from "./productSlice";
-import { setUserInfo } from "./userSlice";
+import { toggleLoginFlag } from "./slice/productSlice";
+import { setUserInfo } from "./slice/userSlice";
 
 const Login = () => {
   const [usrName, setUsrName] = useState("");

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { allProducts } from "./productSlice";
+import { allProducts } from "./slice/productSlice";
 import SearchBar from "./SearchBar";
 import ProductCard from "./ProductCard";
 

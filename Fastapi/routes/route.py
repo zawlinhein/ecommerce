@@ -5,7 +5,8 @@ from config.database import collection
 from bson import ObjectId
 import os
 from pathlib import Path
-
+import uuid
+from urllib.parse import urlparse
 
 router=APIRouter()
 
@@ -41,13 +42,19 @@ async def update_product(_id,data:update_product):
         "status":"ok"
     }
 
-@router.delete("/delete")
-async def delete_product(_id):
-    collection.delete_one({"_id":ObjectId(_id)})
-    return{
-        "status":"ok"
-    }
-
+@router.delete("/delete/{_id}")
+async def delete_product(_id:str):
+    selected_product=serialize_one(collection.find_one({"_id":ObjectId(_id)}))
+    imagePath=selected_product["thumbnail"]
+    parsed_url=urlparse(imagePath)
+    filename=parsed_url.path.split('/')[-1]
+    file_path=f'uploads/{filename}'
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        collection.delete_one({"_id":ObjectId(_id)})
+        return {
+            "status":"ok"
+        }
 
 UPLOAD_FOLDER = "uploads"
 Path(UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
@@ -65,7 +72,8 @@ async def upload_file(file: UploadFile = File(...),
     rating: float = Form(...)
 ):
 
-    file_location = os.path.join(UPLOAD_FOLDER, file.filename)  
+    file_name=f"{uuid.uuid4()}_{file.filename}"
+    file_location = os.path.join(UPLOAD_FOLDER, file_name)  
     with open(file_location, "wb+") as file_object:
         file_object.write(file.file.read())
     file_url = f"http://localhost:8000/{file_location}"

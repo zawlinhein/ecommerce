@@ -2,9 +2,9 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import "./navbar.css";
-import { cartItems, loginFlag } from "./productSlice";
+import { cartItems, loginFlag } from "../slice/productSlice";
 import { useSelector } from "react-redux";
-import { currentUser } from "./userSlice";
+import { currentUser } from "../slice/userSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -40,14 +40,23 @@ const Navbar = () => {
           </>
         )}
         {userData.role === "admin" && (
-          <li>
-            <Link to="/admin">admin</Link>
-          </li>
+          <>
+            <li>
+              <Link to="/admin">admin</Link>
+            </li>
+            <li>
+              <Link to="/addProduct">Add Product</Link>
+            </li>
+          </>
         )}
       </ul>
       <div className="navbar-cart" onClick={() => navigate("/cart")}>
         <FaShoppingCart />
-        {itemNum > 0 && <span className="item-count">{itemNum}</span>}
+        {itemNum > 0 && (
+          <span className="absolute -right-3 -top-3 rounded-full bg-red-600 text-xs p-1 flex justify-center">
+            {itemNum}
+          </span>
+        )}
       </div>
     </nav>
   );

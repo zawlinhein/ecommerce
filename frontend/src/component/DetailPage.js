@@ -4,14 +4,14 @@ import ReactImageGallery from "react-image-gallery";
 import Rater from "react-rater";
 import "react-rater/lib/react-rater.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, allProducts, cartItems } from "./productSlice";
+import { addToCart, allProducts, cartItems } from "./slice/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 
 const DetailPage = () => {
   const { productId } = useParams();
   const products = useSelector(allProducts);
   const itemsInCart = useSelector(cartItems);
-  const selectedProduct = products[productId - 1];
+  const selectedProduct = products.find((item) => item._id === productId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,11 +31,9 @@ const DetailPage = () => {
     description: selectedProduct.description,
   };
 
-  console.log(productDetailItem.images);
-
   const addToCartAction = (e) => {
     const productInCart = itemsInCart.find(
-      (item) => item.id === selectedProduct.id
+      (item) => item._id === selectedProduct._id
     );
     if (!productInCart) {
       dispatch(addToCart(selectedProduct));

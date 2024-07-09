@@ -1,16 +1,16 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import NavBar from "./component/NavBar";
+import NavBar from "./component/navbar/NavBar";
 import { Suspense, lazy } from "react";
 import Home from "./component/Home";
 import Loading from "./component/Loading";
 import axios from "axios";
-import { setProduct, toggleLoginFlag } from "./component/productSlice";
+import { setProduct, toggleLoginFlag } from "./component/slice/productSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { RequireAuth } from "./component/RequireAuth";
 import { validateToken } from "./component/Auth";
-import { setUserInfo } from "./component/userSlice";
+import { setUserInfo } from "./component/slice/userSlice";
 
 function App() {
   const DetailPage = lazy(() => import("./component/DetailPage"));
@@ -19,8 +19,8 @@ function App() {
   const Register = lazy(() => import("./component/Register"));
   const Profile = lazy(() => import("./component/Profile"));
   const Cart = lazy(() => import("./component/Cart"));
-  const AdminDashboard = lazy(() => import("./component/AdminDashboard"));
-  const AddProduct = lazy(() => import("./component/AddProduct"));
+  const AdminDashboard = lazy(() => import("./component/admin/AdminDashboard"));
+  const AddProduct = lazy(() => import("./component/admin/AddProduct"));
 
   const dispatch = useDispatch();
   useEffect(() => {

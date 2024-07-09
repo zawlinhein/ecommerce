@@ -1,13 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { allProducts, editProduct } from "./productSlice";
+import { allProducts, editProduct, setProduct } from "../slice/productSlice";
 import "./admin.css";
 import axios from "axios";
-import { fetchToken } from "./Auth";
+import { fetchToken } from "../Auth";
+import ConfirmBox from "./ConfirmBox";
 
 const AdminDashboard = () => {
   const [editId, setEditId] = useState(-1);
+  const dispatch = useDispatch();
+  const [isConfirmBoxOpen, setIsConfirmBoxOpen] = useState(0);
   const productList = useSelector(allProducts);
+
+  const closeConfirmationBox = () => {
+    setIsConfirmBoxOpen(0);
+  };
+  const handleConfirm = () => {
+    axios
+      .delete(`http://localhost:8000/delete/${isConfirmBoxOpen}`)
+      .then((res) => {
+        console.log(res);
+        const newProductList = productList.filter(
+          (item) => item._id !== isConfirmBoxOpen
+        );
+        dispatch(setProduct(newProductList));
+      });
+    setIsConfirmBoxOpen(0);
+  };
 
   const handleEdit = (id) => {
     setEditId(id);
@@ -15,7 +34,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <table className="product-table">
+      <table className="product-table container mx-auto mt-5 rounded-lg shadow-lg shadow-gray-200">
         <tbody>
           {productList.map((item) =>
             editId === item.id ? (
@@ -40,13 +59,24 @@ const AdminDashboard = () => {
                   >
                     Edit
                   </button>
-                  <button className="action-button">Delete</button>
+                  <button
+                    className="action-button"
+                    onClick={() => setIsConfirmBoxOpen(item._id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             )
           )}
         </tbody>
       </table>
+      {isConfirmBoxOpen && (
+        <ConfirmBox
+          closeConfirmationBox={closeConfirmationBox}
+          handleConfirm={handleConfirm}
+        />
+      )}
     </div>
   );
 };
@@ -78,7 +108,7 @@ const Edit = ({ title, stock, price, setId, id, _id }) => {
       )
       .then((res) => {
         console.log(res.data);
-        dispatch(editProduct({ id, editStock, editPrice }));
+        dispatch(editProduct({ _id, editStock, editPrice }));
       })
       .catch((error) => {
         alert("Failed to update resource. Please try again.");
