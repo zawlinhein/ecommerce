@@ -5,7 +5,7 @@ import { Suspense, lazy } from "react";
 import Home from "./component/Home";
 import Loading from "./component/Loading";
 import axios from "axios";
-import { setProduct, toggleLoginFlag } from "./component/slice/productSlice";
+import { setProduct } from "./component/slice/productSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { RequireAuth } from "./component/RequireAuth";
@@ -15,8 +15,8 @@ import { setUserInfo } from "./component/slice/userSlice";
 function App() {
   const DetailPage = lazy(() => import("./component/DetailPage"));
   const NotFoundPage = lazy(() => import("./component/NotFoundPage"));
-  const Login = lazy(() => import("./component/Login"));
-  const Register = lazy(() => import("./component/Register"));
+  const Login = lazy(() => import("./component/auth/Login"));
+  const Register = lazy(() => import("./component/auth/Register"));
   const Profile = lazy(() => import("./component/Profile"));
   const Cart = lazy(() => import("./component/Cart"));
   const AdminDashboard = lazy(() => import("./component/admin/AdminDashboard"));
@@ -39,8 +39,7 @@ function App() {
       const data = await validateToken();
       if (data) {
         dispatch(setUserInfo(data));
-        dispatch(toggleLoginFlag(true));
-      } else dispatch(toggleLoginFlag(false));
+      }
     };
 
     checkToken();

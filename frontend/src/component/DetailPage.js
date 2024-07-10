@@ -89,7 +89,7 @@ const DetailPage = () => {
           Brand: <span className="font-normal">{productDetailItem.brand}</span>
         </p>
         <p className="font-bold">
-          Cathegory:{" "}
+          Category:{" "}
           <span className="font-normal">{productDetailItem.category}</span>
         </p>
         <p className="font-bold">

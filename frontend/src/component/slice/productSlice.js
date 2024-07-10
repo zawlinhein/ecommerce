@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   products: [],
   cart: [],
-  loginFlag: false,
 };
 
 const productSlice = createSlice({
@@ -67,12 +66,6 @@ const productSlice = createSlice({
         ),
       };
     },
-    toggleLoginFlag(state, action) {
-      return {
-        ...state,
-        loginFlag: action.payload,
-      };
-    },
   },
 });
 
@@ -84,10 +77,8 @@ export const {
   addToCart,
   updateCart,
   setQty,
-  toggleLoginFlag,
   editProduct,
 } = productSlice.actions;
 
 export const allProducts = (state) => state.products.products;
 export const cartItems = (state) => state.products.cart;
-export const loginFlag = (state) => state.products.loginFlag;

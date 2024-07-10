@@ -2,7 +2,6 @@ import React from "react";
 import { removeToken } from "./Auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleLoginFlag } from "./slice/productSlice";
 import { currentUser, setUserInfo } from "./slice/userSlice";
 
 const Profile = () => {
@@ -12,7 +11,6 @@ const Profile = () => {
 
   const handleLogout = () => {
     removeToken();
-    dispatch(toggleLoginFlag(false));
     dispatch(setUserInfo({}));
     navigate("/");
   };

@@ -10,29 +10,26 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="max-w-xs rounded overflow-hidden shadow-lg bg-gray-100">
-      <img
-        src={product.images[0]}
-        alt={product.title}
-        className="w-full h-48 object-cover"
-      />
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2 text-gray-800">
-          {product.title}
+    <div className="group relative">
+      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+        <img
+          src={product.images[0]}
+          className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+        />
+      </div>
+      <div className="mt-4 flex justify-between">
+        <div>
+          <h3 className="text-sm text-gray-700">
+            <a href="#" onClick={handleBuyNow}>
+              <span aria-hidden="true" className="absolute inset-0"></span>
+              {product.title}
+            </a>
+          </h3>
+          <p className={`text-sm mt-1 ${availability}`}>
+            {product.stock ? "In Stock" : "Out of stock"}
+          </p>
         </div>
-        <p className="text-gray-700 text-base">${product.price}</p>
-        <p className={`text-sm ${availability}`}>
-          {product.stock ? "In Stock" : "Out of Stock"}
-        </p>
-        <button
-          onClick={handleBuyNow}
-          disabled={!product.stock}
-          className={`mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ${
-            !product.stock && "opacity-50 cursor-not-allowed"
-          }`}
-        >
-          Buy Now
-        </button>
+        <p className="text-sm font-medium text-gray-900">{product.price}</p>
       </div>
     </div>
   );

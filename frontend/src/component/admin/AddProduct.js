@@ -3,39 +3,97 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setProduct } from "../slice/productSlice";
 import { useNavigate } from "react-router-dom";
+import InputBox from "./InputBox";
 
 const AddProduct = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [id, setId] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-  const [sku, setSku] = useState("");
-  const [category, setCategory] = useState("");
-  const [brand, setBrand] = useState("");
-  const [rating, setRating] = useState("");
+  const [values, setValues] = useState({
+    id: "",
+    title: "",
+    description: "",
+    price: "",
+    stock: "",
+    sku: "",
+    category: "",
+    brand: "",
+    rating: "",
+    selectedFile: null,
+  });
 
+  const inputs = [
+    { id: "id", name: "id", placeholder: "Id", type: "text", regex: /^\d+$/ },
+    { id: "title", name: "title", placeholder: "Title", type: "text" },
+    {
+      id: "description",
+      name: "description",
+      placeholder: "Description ",
+      type: "text",
+    },
+    {
+      id: "price",
+      name: "price",
+      placeholder: "Price ",
+      type: "text",
+      regex: /^\d+(\.\d+)?$/,
+    },
+    {
+      id: "stock",
+      name: "stock",
+      placeholder: "Stock ",
+      type: "text",
+      regex: /^\d+$/,
+    },
+    {
+      id: "sku",
+      name: "sku",
+      placeholder: "Sku ",
+      type: "text",
+      regex: /^(?:[A-Z]{8}|\d{8}|(?=.*[A-Z])(?=.*\d)[A-Z\d]{8})$/,
+    },
+    {
+      id: "category",
+      name: "category",
+      placeholder: "Category ",
+      type: "text",
+    },
+    { id: "brand", name: "brand", placeholder: "Brand ", type: "text" },
+    {
+      id: "rating",
+      name: "rating",
+      placeholder: "Rating ",
+      type: "text",
+      regex: /^(?:0(?:\.\d+)?|[1-4](?:\.\d+)?|5(?:\.0+)?)$/,
+    },
+  ];
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [errMsg, setErrMsg] = useState("");
 
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setValues({
+      ...values,
+      [values.selectedFile]: event.target.files[0],
+    });
   };
 
   const formData = new FormData();
-  formData.append("id", id);
-  formData.append("title", title);
-  formData.append("description", description);
-  formData.append("price", price);
-  formData.append("stock", stock);
-  formData.append("sku", sku);
-  formData.append("category", category);
-  formData.append("brand", brand);
-  formData.append("rating", rating);
-  formData.append("file", selectedFile);
+  formData.append("id", values.id);
+  formData.append("title", values.title);
+  formData.append("description", values.description);
+  formData.append("price", values.price);
+  formData.append("stock", values.stock);
+  formData.append("sku", values.sku);
+  formData.append("category", values.category);
+  formData.append("brand", values.brand);
+  formData.append("rating", values.rating);
+  formData.append("file", values.selectedFile);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,111 +125,30 @@ const AddProduct = () => {
       });
   };
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto w-1/3 p-4">
       <h1 className="text-3xl font-bold mb-4">Add New Product</h1>
       <p className="text-2xl text-red-400">{errMsg}</p>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Id</label>
-          <input
-            type="text"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        {inputs.map((input) => (
+          <InputBox
+            key={input.id}
+            {...input}
+            value={values[input.name]}
+            handleChange={handleChange}
           />
-        </div>
+        ))}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Title
-          </label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Description
-          </label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Price
-          </label>
-          <input
-            type="text"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Stock
-          </label>
-          <input
-            type="text"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Sku</label>
-          <input
-            type="text"
-            value={sku}
-            onChange={(e) => setSku(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Category
-          </label>
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Brand
-          </label>
-          <input
-            type="text"
-            value={brand}
-            onChange={(e) => setBrand(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Rating
-          </label>
-          <input
-            type="text"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="image"
+            className="block text-sm font-medium text-gray-700"
+          >
             Image
           </label>
           <input
+            id="image"
             type="file"
             onChange={handleFileChange}
+            required
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>

@@ -1,12 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  cartItems,
-  updateCart,
-  setQty,
-  setStock,
-  loginFlag,
-} from "./slice/productSlice";
+import { cartItems, updateCart, setQty, setStock } from "./slice/productSlice";
 import axios from "axios";
 import "./cart.css";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +12,6 @@ const Cart = () => {
   const navigate = useNavigate();
   const userData = useSelector(currentUser);
   const itemsInCart = useSelector(cartItems);
-  const flag = useSelector(loginFlag);
 
   const changeQty = (sign, qty, productId) => {
     if (sign === "+") {
@@ -121,7 +114,7 @@ const Cart = () => {
         Total Price: ${calculateTotalPrice().toFixed(2)}
       </div>
       <div className="checkout-buttons">
-        {flag ? (
+        {"_id" in userData ? (
           <button onClick={handleCheckout}>Checkout</button>
         ) : (
           <button onClick={() => navigate("/login")}>Login</button>

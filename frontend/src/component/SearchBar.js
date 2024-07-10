@@ -2,9 +2,9 @@ import React from "react";
 
 export default function SearchBar({ setSearchText, searchText }) {
   return (
-    <div className="flex justify-center items-center py-3">
-      <div className="mb-3 xl:w-96 flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+    <div className="flex justify-center items-center pt-3">
+      <div className=" xl:w-96 flex justify-center">
+        <div className="relative  flex w-full flex-wrap items-stretch">
           <input
             autoFocus
             type="search"
