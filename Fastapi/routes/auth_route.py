@@ -5,7 +5,7 @@ from models.user import LoginItem,invoice
 from models.product import update_product
 from config.database import user_collection,collection
 from passlib.context import CryptContext
-from schemas.user_schema import user_serialize
+from schemas.user_schema import user_serialize,user_serialize_all
 from bson import ObjectId
 
 auth_router = APIRouter()
@@ -33,17 +33,13 @@ async def user_login(loginitem: LoginItem):
         token_data = {"username": loginitem.username, "role": user["role"]}
         token = jwt.encode(token_data, SECERT_KEY, algorithm=ALGORITHM)
         user=user_serialize(user)
-        return {"token": token,"userData":user}
+        if user["role"]=="admin":
+            users=user_serialize_all(user_collection.find())
+            return {"token": token,"userData":user,"allUsersData":users}
+        else:
+            return {"token": token,"userData":user}
     raise HTTPException(status_code=401, detail="Invalid password")
 
-@auth_router.get("/validate-token")
-async def validate_token(token: str = Depends(oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, SECERT_KEY, algorithms=[ALGORITHM])
-        return {"username": payload.get("username"), "role": payload.get("role")}
-    except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid token")
-    
 @auth_router.put("/edit-product/{_id}")
 async def validate_token(_id,data:update_product,token: str = Depends(oauth2_scheme)):
     try:
@@ -97,3 +93,8 @@ async def update_invoice(_id,data:invoice):
     return{
         "status":"ok"
     }
+
+@auth_router.get("/get-all-users-data")
+async def get_all_users_data():
+    users=user_serialize_all(user_collection.find())
+    return users

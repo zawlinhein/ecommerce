@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { RequireAuth } from "./component/RequireAuth";
 import { validateToken } from "./component/Auth";
-import { setUserInfo } from "./component/slice/userSlice";
+import { setAllUsersInfo, setUserInfo } from "./component/slice/userSlice";
 
 function App() {
   const DetailPage = lazy(() => import("./component/DetailPage"));
@@ -21,6 +21,7 @@ function App() {
   const Cart = lazy(() => import("./component/Cart"));
   const AdminDashboard = lazy(() => import("./component/admin/AdminDashboard"));
   const AddProduct = lazy(() => import("./component/admin/AddProduct"));
+  const EditUsers = lazy(() => import("./component/admin/EditUsers"));
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -39,6 +40,16 @@ function App() {
       const data = await validateToken();
       if (data) {
         dispatch(setUserInfo(data));
+        if (data.role === "admin") {
+          try {
+            const res = await axios.get(
+              "http://localhost:8000/get-all-users-data"
+            );
+            dispatch(setAllUsersInfo(res.data));
+          } catch (err) {
+            alert("error");
+          }
+        }
       }
     };
 
@@ -71,6 +82,14 @@ function App() {
             element={
               <RequireAuth role="admin">
                 <AdminDashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/editUsers"
+            element={
+              <RequireAuth role="admin">
+                <EditUsers />
               </RequireAuth>
             }
           />

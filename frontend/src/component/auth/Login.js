@@ -4,7 +4,7 @@ import axios from "axios";
 import { setToken } from "../Auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUserInfo } from "../slice/userSlice";
+import { setAllUsersInfo, setUserInfo } from "../slice/userSlice";
 
 const Login = () => {
   const [usrName, setUsrName] = useState("");
@@ -36,6 +36,8 @@ const Login = () => {
           setToken(response.data.token);
           navigate("/profile");
           dispatch(setUserInfo(response.data.userData));
+          if (response.data.allUsersData)
+            dispatch(setAllUsersInfo(response.data.allUsersData));
         }
       })
       .catch((error) => {

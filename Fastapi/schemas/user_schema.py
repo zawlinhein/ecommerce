@@ -5,3 +5,6 @@ def user_serialize(user) -> dict:
         "role":user["role"],
         "purchased_history":user["purchased_history"]
     }
+
+def user_serialize_all(users) -> list:
+    return [user_serialize(user) for user in users]

@@ -13,3 +13,5 @@ db=client.dummy
 collection=db["products"]
 
 user_collection=db["users"]
+
+category_collection=db["category"]
