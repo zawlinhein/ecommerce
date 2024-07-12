@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { allProducts } from "./slice/productSlice";
-import SearchBar from "./SearchBar";
-import ProductCard from "./ProductCard";
-import ProductFilter from "./ProductFilter";
+import SearchBar from "./productsDisplay/SearchBar";
+import ProductCard from "./productsDisplay/ProductCard";
+import ProductFilter from "./productsDisplay/ProductFilter";
 
 const Home = () => {
   const [searchText, setSearchText] = useState("");
@@ -17,9 +17,10 @@ const Home = () => {
       .includes(searchText.toLowerCase());
     const categoryFilter = category ? item.category === category : true;
     const priceFilter = priceRange
-      ? (priceRange === "1-50" && item.price > 0 && item.price <= 50) ||
+      ? (priceRange === "0-50" && item.price > 0 && item.price <= 50) ||
         (priceRange === "51-100" && item.price > 50 && item.price <= 100) ||
-        (priceRange === "101-200" && item.price > 100 && item.price <= 200)
+        (priceRange === "101-200" && item.price > 100 && item.price <= 200) ||
+        (priceRange === "200<" && item.price > 200)
       : true;
     return textFilter && categoryFilter && priceFilter;
   });

@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 const InputBox = (props) => {
-  const { value, handleChange, id, placeholder, regex, ...inputProps } = props;
+  const {
+    value,
+    handleChange,
+    id,
+    placeholder,
+    regex,
+    categoryList,
+    ...inputProps
+  } = props;
   const [isBlur, setIsBlur] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
@@ -18,7 +26,22 @@ const InputBox = (props) => {
       <label htmlFor={id} className="block text-sm font-medium text-gray-700">
         {placeholder}
       </label>
-      {id !== "description" ? (
+      {id === "category" ? (
+        <select
+          {...inputProps}
+          id={id}
+          onChange={handleChange}
+          value={value}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+          {categoryList.map((item) => (
+            <option value={item}>
+              {" "}
+              {item.charAt(0).toUpperCase() + item.slice(1)}
+            </option>
+          ))}
+        </select>
+      ) : id !== "description" ? (
         <input
           {...inputProps}
           id={id}
@@ -40,7 +63,7 @@ const InputBox = (props) => {
         />
       )}
       {isBlur && !isValid && (
-        <span className="text-sm text-red-500">Mar nay dl</span>
+        <span className="text-sm text-red-500">Invalid input!</span>
       )}
     </div>
   );

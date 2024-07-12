@@ -7,6 +7,10 @@ from config.database import user_collection,collection
 from passlib.context import CryptContext
 from schemas.user_schema import user_serialize,user_serialize_all
 from bson import ObjectId
+import os
+from pathlib import Path
+import uuid
+from urllib.parse import urlparse
 
 auth_router = APIRouter()
 
@@ -74,10 +78,20 @@ async def add_user(registerData: LoginItem):
         raise HTTPException(status_code=409,detail="Username Taken")
     data["password"]=get_password_hash(data["password"])
     data["role"] = "luu"
+    data["profile_pic"]=''
     data["purchased_history"]= []
     user_collection.insert_one(data)
     return {
         "status": "ok"
+    }
+
+@auth_router.post("/reset-pwd/{_id}")
+async def reset_pwd(_id:str,pw:LoginItem):
+    pwd=dict(pw.model_dump(exclude_unset=True))
+    pwd["password"]=get_password_hash(pwd["password"])
+    user_collection.find_one_and_update({"_id":ObjectId(_id)},{"$set":pwd})
+    return {
+      "status":"ok"
     }
 
 @auth_router.put("/add-invoice/{_id}")
@@ -98,3 +112,19 @@ async def update_invoice(_id,data:invoice):
 async def get_all_users_data():
     users=user_serialize_all(user_collection.find())
     return users
+
+@auth_router.delete("/delete-user/{_id}")
+async def delete_user(_id:str):
+    selected_user=user_serialize(user_collection.find_one({"_id":ObjectId(_id)}))
+    if selected_user["profile_pic"]!="":
+        imagePath=selected_user["profile_pic"]
+        parsed_url=urlparse(imagePath)
+        filename=parsed_url.path.split('/')[-1]
+        file_path=f'uploads/{filename}'
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+    user_collection.delete_one({"_id":ObjectId(_id)})
+    return {
+        "status":"ok"
+    }

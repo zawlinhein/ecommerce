@@ -15,6 +15,7 @@ const AdminDashboard = () => {
   const closeConfirmationBox = () => {
     setIsConfirmBoxOpen(0);
   };
+
   const handleConfirm = () => {
     axios
       .delete(`http://localhost:8000/delete/${isConfirmBoxOpen}`)

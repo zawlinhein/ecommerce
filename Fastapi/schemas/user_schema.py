@@ -3,7 +3,8 @@ def user_serialize(user) -> dict:
         "_id":str(user["_id"]),
         "username":user["username"],
         "role":user["role"],
-        "purchased_history":user["purchased_history"]
+        "purchased_history":user["purchased_history"],
+        "profile_pic":user["profile_pic"]
     }
 
 def user_serialize_all(users) -> list:

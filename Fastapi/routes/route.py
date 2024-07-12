@@ -51,10 +51,10 @@ async def delete_product(_id:str):
     file_path=f'uploads/{filename}'
     if os.path.exists(file_path):
         os.remove(file_path)
-        collection.delete_one({"_id":ObjectId(_id)})
-        return {
-            "status":"ok"
-        }
+    collection.delete_one({"_id":ObjectId(_id)})
+    return {
+        "status":"ok"
+    }
 
 UPLOAD_FOLDER = "uploads"
 Path(UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)

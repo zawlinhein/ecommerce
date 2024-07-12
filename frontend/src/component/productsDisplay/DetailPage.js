@@ -4,7 +4,7 @@ import ReactImageGallery from "react-image-gallery";
 import Rater from "react-rater";
 import "react-rater/lib/react-rater.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, allProducts, cartItems } from "./slice/productSlice";
+import { addToCart, allProducts, cartItems } from "../slice/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 
 const DetailPage = () => {

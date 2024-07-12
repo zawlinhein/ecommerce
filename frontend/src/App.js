@@ -13,7 +13,9 @@ import { validateToken } from "./component/Auth";
 import { setAllUsersInfo, setUserInfo } from "./component/slice/userSlice";
 
 function App() {
-  const DetailPage = lazy(() => import("./component/DetailPage"));
+  const DetailPage = lazy(() =>
+    import("./component/productsDisplay/DetailPage")
+  );
   const NotFoundPage = lazy(() => import("./component/NotFoundPage"));
   const Login = lazy(() => import("./component/auth/Login"));
   const Register = lazy(() => import("./component/auth/Register"));

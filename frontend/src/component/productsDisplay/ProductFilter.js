@@ -6,6 +6,7 @@ const ProductFilter = ({
   priceRange,
   setPriceRange,
 }) => {
+  const categoryList = ["furniture", "beauty", "fragrances"];
   return (
     <div className="w-full max-w-xs p-4">
       <h3 className="text-xl font-bold mb-4">Filters</h3>
@@ -23,40 +24,19 @@ const ProductFilter = ({
           />
           All
         </label>
-        <label className="block mb-2">
-          <input
-            type="radio"
-            name="category"
-            value="furniture"
-            checked={category === "furniture"}
-            onChange={() => setCategory("furniture")}
-            className="mr-2"
-          />
-          Furnitures
-        </label>
-        <label className="block mb-2">
-          <input
-            type="radio"
-            name="category"
-            value="beauty"
-            checked={category === "beauty"}
-            onChange={() => setCategory("beauty")}
-            className="mr-2"
-          />
-          Beauty
-        </label>
-        <label className="block mb-2">
-          <input
-            type="radio"
-            name="category"
-            value="fragrances"
-            checked={category === "fragrances"}
-            onChange={() => setCategory("fragrances")}
-            className="mr-2"
-          />
-          Fragrances
-        </label>
-        {/* Add more categories as needed */}
+        {categoryList.map((item) => (
+          <label className="block mb-2" key={item}>
+            <input
+              type="radio"
+              name="category"
+              value={item}
+              checked={category === item}
+              onChange={() => setCategory(item)}
+              className="mr-2"
+            />
+            {item.charAt(0).toUpperCase() + item.slice(1)}
+          </label>
+        ))}
       </div>
 
       <div>
@@ -76,9 +56,9 @@ const ProductFilter = ({
           <input
             type="radio"
             name="priceRange"
-            value="1-50"
-            checked={priceRange === "1-50"}
-            onChange={() => setPriceRange("1-50")}
+            value="0-50"
+            checked={priceRange === "0-50"}
+            onChange={() => setPriceRange("0-50")}
             className="mr-2"
           />
           $0 - $50
@@ -105,7 +85,17 @@ const ProductFilter = ({
           />
           $101 - $200
         </label>
-        {/* Add more price ranges as needed */}
+        <label className="block mb-2">
+          <input
+            type="radio"
+            name="priceRange"
+            value="200<"
+            checked={priceRange === "200<"}
+            onChange={() => setPriceRange("200<")}
+            className="mr-2"
+          />
+          over $200
+        </label>
       </div>
     </div>
   );

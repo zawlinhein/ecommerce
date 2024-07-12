@@ -53,7 +53,7 @@ const AddProduct = () => {
       id: "category",
       name: "category",
       placeholder: "Category ",
-      type: "text",
+      categoryList: ["furniture", "beauty", "fragrances"],
     },
     { id: "brand", name: "brand", placeholder: "Brand ", type: "text" },
     {
@@ -79,7 +79,7 @@ const AddProduct = () => {
   const handleFileChange = (event) => {
     setValues({
       ...values,
-      [values.selectedFile]: event.target.files[0],
+      selectedFile: event.target.files[0],
     });
   };
 
