@@ -6,6 +6,7 @@ import "react-rater/lib/react-rater.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, allProducts, cartItems } from "../slice/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
+import CommentSection from "./CommentSection"; // Import CommentSection
 
 const DetailPage = () => {
   const { productId } = useParams();
@@ -19,7 +20,6 @@ const DetailPage = () => {
     images: [
       {
         original: selectedProduct.images[0],
-        thumbnail: selectedProduct.thumbnail,
       },
     ],
     title: selectedProduct.title,
@@ -45,19 +45,19 @@ const DetailPage = () => {
   };
 
   return (
-    <section className="container flex-grow mx-auto max-w-[1200px] border-b py-5 lg:grid lg:grid-cols-2 lg:py-10">
-      {/* image gallery */}
-      <div className="container mx-auto px-4">
+    <section className="container mx-auto max-w-[1200px] border-b py-5 lg:grid lg:grid-cols-2 lg:py-10">
+      {/* Image gallery */}
+      <div className="px-4">
         <ReactImageGallery
+          showThumbnails={false}
           showBullets={false}
           showFullscreenButton={false}
           showPlayButton={false}
           items={productDetailItem.images}
         />
       </div>
-      {/* description  */}
-
-      <div className="mx-auto px-5 lg:px-5">
+      {/* Description */}
+      <div className="px-5 lg:px-5">
         <h2 className="pt-3 text-2xl font-bold lg:pt-0">
           {productDetailItem.title}
         </h2>
@@ -69,7 +69,6 @@ const DetailPage = () => {
               interactive={false}
               rating={selectedProduct.rating}
             />
-
             <p className="ml-3 text-sm text-gray-400">
               ({selectedProduct.rating})
             </p>
@@ -105,31 +104,6 @@ const DetailPage = () => {
           {productDetailItem.description}
         </p>
 
-        {/* <div className="mt-6">
-          <p className="pb-2 text-xs text-gray-500">Quantity</p>
-          <div className="flex">
-            <button
-              className={`${plusMinuceButton}`}
-              onClick={decreaseQty}
-              disabled={quantity <= 0}
-            >
-              −
-            </button>
-            <input
-              className="flex h-8 w-8 cursor-text items-center justify-center border-t border-b active:ring-gray-500 text-center"
-              value={quantity}
-              readOnly
-            />
-            <button
-              className={`${plusMinuceButton}`}
-              onClick={increaseQty}
-              disabled={quantity >= selectedProduct.stock}
-            >
-              {" "}
-              +
-            </button>
-          </div>
-        </div> */}
         <div className="mt-7 flex flex-row items-center gap-6">
           <button
             className="flex h-12 w-1/3 items-center justify-center bg-violet-900 text-white duration-100 hover:bg-blue-800"
@@ -143,6 +117,11 @@ const DetailPage = () => {
             Wishlist
           </button>
         </div>
+      </div>
+
+      {/* Comment Section */}
+      <div className="col-span-2">
+        <CommentSection />
       </div>
     </section>
   );

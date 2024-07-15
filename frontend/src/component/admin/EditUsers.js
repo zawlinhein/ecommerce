@@ -4,6 +4,7 @@ import { allUsers, setAllUsersInfo } from "../slice/userSlice";
 import ConfirmBox from "./ConfirmBox";
 import axios from "axios";
 import PwdReset from "../auth/PwdReset";
+import EditRole from "./EditRole";
 
 const EditUsers = () => {
   const allUsersData = useSelector(allUsers);
@@ -12,6 +13,9 @@ const EditUsers = () => {
 
   const [isPwdOpen, setIsPwdOpen] = useState(null);
   const [username, setUsername] = useState("");
+
+  const [isEditRoleOpen, setIsEditRoleOpen] = useState(null);
+  const [selectedRole, setSelectedRole] = useState("");
 
   const closeConfirmationBox = () => {
     setIsConfirmBoxOpen(null);
@@ -44,7 +48,10 @@ const EditUsers = () => {
             <div className="flex space-x-4">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                onClick={() => console.log(`Edit role for ${user.username}`)}
+                onClick={() => {
+                  setIsEditRoleOpen(user._id);
+                  setSelectedRole(user.role);
+                }}
               >
                 Edit Role
               </button>
@@ -79,6 +86,14 @@ const EditUsers = () => {
           isPwdOpen={isPwdOpen}
           setIsPwdOpen={setIsPwdOpen}
           username={username}
+        />
+      )}
+      {isEditRoleOpen && (
+        <EditRole
+          isEditRoleOpen={isEditRoleOpen}
+          setIsEditRoleOpen={setIsEditRoleOpen}
+          selectedRole={selectedRole}
+          setSelectedRole={setSelectedRole}
         />
       )}
     </div>

@@ -131,8 +131,8 @@ const AddProduct = () => {
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
         {inputs.map((input) => (
           <InputBox
-            key={input.id}
             {...input}
+            key={input.id}
             value={values[input.name]}
             handleChange={handleChange}
           />

@@ -1,14 +1,25 @@
 import React, { useState } from "react";
-import { removeToken } from "./Auth";
+import { removeToken } from "../Auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, setUserInfo } from "./slice/userSlice";
+import { currentUser, setUserInfo } from "../slice/userSlice";
+import InvoiceComponent from "./InvoiceComponent";
 
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector(currentUser);
   const [openIndex, setOpenIndex] = useState(null);
+
+  const options = {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  };
 
   const handleLogout = () => {
     removeToken();
@@ -54,10 +65,7 @@ const Profile = () => {
                     className="flex justify-between items-center cursor-pointer p-2 bg-gray-100 rounded"
                     onClick={() => toggleCollapse(index)}
                   >
-                    <p className="text-lg font-semibold">
-                      Invoice Date: {invoice.date} - Total Price:{" "}
-                      {invoice.totalPrice.toFixed(2)}
-                    </p>
+                    <InvoiceComponent invoice={invoice} />
                     <svg
                       className={`w-5 h-5 text-blue-700 transform transition-transform ${
                         openIndex === index ? "rotate-180" : ""

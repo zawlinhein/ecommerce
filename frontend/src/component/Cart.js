@@ -34,8 +34,7 @@ const Cart = () => {
 
   const getCurrentDate = () => {
     const date = new Date();
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return date.toLocaleDateString(undefined, options);
+    return date.toISOString();
   };
 
   const handleCheckout = (e) => {
@@ -57,11 +56,13 @@ const Cart = () => {
       title: item.title,
       qty: item.qty,
     }));
+
     const invoice = {
       date: getCurrentDate(),
       totalPrice: calculateTotalPrice(),
       items: filteredItems,
     };
+
     axios
       .put(`http://localhost:8000/add-invoice/${userData._id}`, invoice)
       .then((res) => {

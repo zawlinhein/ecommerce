@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from models.user import LoginItem,invoice
+from models.user import LoginItem,invoice,user_role
 from models.product import update_product
 from config.database import user_collection,collection
 from passlib.context import CryptContext
@@ -92,6 +92,14 @@ async def reset_pwd(_id:str,pw:LoginItem):
     user_collection.find_one_and_update({"_id":ObjectId(_id)},{"$set":pwd})
     return {
       "status":"ok"
+    }
+
+@auth_router.post("/edit-role/{_id}")
+async def edit_role(_id:str,role:user_role):
+    role=dict(role)
+    user_collection.find_one_and_update({"_id":ObjectId(_id)},{"$set":role})
+    return {
+        "status":"ok"
     }
 
 @auth_router.put("/add-invoice/{_id}")

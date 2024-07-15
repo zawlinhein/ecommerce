@@ -19,11 +19,14 @@ function App() {
   const NotFoundPage = lazy(() => import("./component/NotFoundPage"));
   const Login = lazy(() => import("./component/auth/Login"));
   const Register = lazy(() => import("./component/auth/Register"));
-  const Profile = lazy(() => import("./component/Profile"));
+  const Profile = lazy(() => import("./component/profile/Profile"));
   const Cart = lazy(() => import("./component/Cart"));
   const AdminDashboard = lazy(() => import("./component/admin/AdminDashboard"));
   const AddProduct = lazy(() => import("./component/admin/AddProduct"));
   const EditUsers = lazy(() => import("./component/admin/EditUsers"));
+  const CommentSection = lazy(() =>
+    import("./component/productsDisplay/CommentSection")
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -71,6 +74,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/addProduct" element={<AddProduct />} />
+          <Route path="/cmt" element={<CommentSection />} />
           <Route
             path="/profile"
             element={

@@ -21,6 +21,15 @@ const userSlice = createSlice({
         allUsers: action.payload,
       };
     },
+    changeRole(state, action) {
+      const { _id, newRole } = action.payload;
+      return {
+        ...state,
+        allUsers: state.allUsers.map((user) =>
+          user._id === _id ? { ...user, role: newRole } : user
+        ),
+      };
+    },
     addPurchasedItems(state, action) {
       return {
         ...state,
@@ -38,7 +47,7 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-export const { setUserInfo, addPurchasedItems, setAllUsersInfo } =
+export const { setUserInfo, addPurchasedItems, setAllUsersInfo, changeRole } =
   userSlice.actions;
 
 export const currentUser = (state) => state.users.currentUser;
