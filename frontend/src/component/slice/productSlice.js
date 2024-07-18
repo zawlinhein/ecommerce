@@ -35,6 +35,17 @@ const productSlice = createSlice({
         ),
       };
     },
+    addReview(state, action) {
+      const { _id, reviewData } = action.payload;
+      return {
+        ...state,
+        products: state.products.map((product) =>
+          product._id === _id
+            ? { ...product, reviews: [...product.reviews, reviewData] }
+            : product
+        ),
+      };
+    },
     addToCart: {
       reducer(state, action) {
         return {
@@ -61,9 +72,9 @@ const productSlice = createSlice({
       const { newQty, productId } = action.payload;
       return {
         ...state,
-        cart: state.cart.map((item) =>
-          item.id === productId ? { ...item, qty: newQty } : item
-        ),
+        cart: state.cart.map((item) => {
+          return item._id === productId ? { ...item, qty: newQty } : item;
+        }),
       };
     },
   },
@@ -78,6 +89,7 @@ export const {
   updateCart,
   setQty,
   editProduct,
+  addReview,
 } = productSlice.actions;
 
 export const allProducts = (state) => state.products.products;

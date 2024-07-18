@@ -7,7 +7,6 @@ import InputBox from "./InputBox";
 
 const AddProduct = () => {
   const [values, setValues] = useState({
-    id: "",
     title: "",
     description: "",
     price: "",
@@ -15,12 +14,10 @@ const AddProduct = () => {
     sku: "",
     category: "",
     brand: "",
-    rating: "",
     selectedFile: null,
   });
 
   const inputs = [
-    { id: "id", name: "id", placeholder: "Id", type: "text", regex: /^\d+$/ },
     { id: "title", name: "title", placeholder: "Title", type: "text" },
     {
       id: "description",
@@ -56,13 +53,6 @@ const AddProduct = () => {
       categoryList: ["furniture", "beauty", "fragrances"],
     },
     { id: "brand", name: "brand", placeholder: "Brand ", type: "text" },
-    {
-      id: "rating",
-      name: "rating",
-      placeholder: "Rating ",
-      type: "text",
-      regex: /^(?:0(?:\.\d+)?|[1-4](?:\.\d+)?|5(?:\.0+)?)$/,
-    },
   ];
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -83,8 +73,12 @@ const AddProduct = () => {
     });
   };
 
+  const getCurrentDate = () => {
+    const date = new Date();
+    return date.toISOString();
+  };
+
   const formData = new FormData();
-  formData.append("id", values.id);
   formData.append("title", values.title);
   formData.append("description", values.description);
   formData.append("price", values.price);
@@ -92,7 +86,7 @@ const AddProduct = () => {
   formData.append("sku", values.sku);
   formData.append("category", values.category);
   formData.append("brand", values.brand);
-  formData.append("rating", values.rating);
+  formData.append("createdAt", getCurrentDate());
   formData.append("file", values.selectedFile);
 
   const handleSubmit = async (e) => {
@@ -121,6 +115,7 @@ const AddProduct = () => {
         navigate("/");
       })
       .catch((error) => {
+        console.log(error);
         setErrMsg("Failed to add product. Please try again.");
       });
   };

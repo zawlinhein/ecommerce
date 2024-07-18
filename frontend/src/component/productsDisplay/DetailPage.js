@@ -1,12 +1,10 @@
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiShoppingBag } from "react-icons/bi";
 import ReactImageGallery from "react-image-gallery";
-import Rater from "react-rater";
-import "react-rater/lib/react-rater.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, allProducts, cartItems } from "../slice/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import CommentSection from "./CommentSection"; // Import CommentSection
+import CommentSection from "./CommentSection";
 
 const DetailPage = () => {
   const { productId } = useParams();
@@ -46,7 +44,6 @@ const DetailPage = () => {
 
   return (
     <section className="container mx-auto max-w-[1200px] border-b py-5 lg:grid lg:grid-cols-2 lg:py-10">
-      {/* Image gallery */}
       <div className="px-4">
         <ReactImageGallery
           showThumbnails={false}
@@ -56,24 +53,11 @@ const DetailPage = () => {
           items={productDetailItem.images}
         />
       </div>
-      {/* Description */}
+
       <div className="px-5 lg:px-5">
         <h2 className="pt-3 text-2xl font-bold lg:pt-0">
           {productDetailItem.title}
         </h2>
-        <div className="mt-1">
-          <div className="flex items-center">
-            <Rater
-              style={{ fontSize: "20px" }}
-              total={5}
-              interactive={false}
-              rating={selectedProduct.rating}
-            />
-            <p className="ml-3 text-sm text-gray-400">
-              ({selectedProduct.rating})
-            </p>
-          </div>
-        </div>
         <p className="mt-5 font-bold">
           Availability:{" "}
           {productDetailItem.availability ? (
@@ -106,8 +90,9 @@ const DetailPage = () => {
 
         <div className="mt-7 flex flex-row items-center gap-6">
           <button
-            className="flex h-12 w-1/3 items-center justify-center bg-violet-900 text-white duration-100 hover:bg-blue-800"
+            className="flex h-12 w-1/3 items-center justify-center bg-violet-900 text-white duration-100 hover:bg-blue-800 disabled:bg-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
             onClick={addToCartAction}
+            disabled={!productDetailItem.availability}
           >
             <BiShoppingBag className="mx-2" />
             Add to cart
@@ -119,9 +104,8 @@ const DetailPage = () => {
         </div>
       </div>
 
-      {/* Comment Section */}
       <div className="col-span-2">
-        <CommentSection />
+        <CommentSection reviews={selectedProduct.reviews} _id={productId} />
       </div>
     </section>
   );

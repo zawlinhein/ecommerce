@@ -11,10 +11,15 @@ const Home = () => {
   const [priceRange, setPriceRange] = useState("");
   const productList = useSelector(allProducts);
 
-  const filterItems = productList.filter((item) => {
+  const sortedProductList = productList
+    .slice()
+    .sort((a, b) => new Date(b.meta.createdAt) - new Date(a.meta.createdAt));
+
+  const filterItems = sortedProductList.filter((item) => {
     const textFilter = item.title
       .toLowerCase()
       .includes(searchText.toLowerCase());
+
     const categoryFilter = category ? item.category === category : true;
     const priceFilter = priceRange
       ? (priceRange === "0-50" && item.price > 0 && item.price <= 50) ||

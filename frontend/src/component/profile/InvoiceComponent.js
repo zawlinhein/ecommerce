@@ -3,17 +3,14 @@ import React from "react";
 const InvoiceComponent = ({ invoice }) => {
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
-    const options = {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-      timeZone: "UTC",
-    };
-    return date.toLocaleString("en-US", options).replace(",", "");
+    const parts = date.toString().split(" ");
+    const month = parts[1];
+    const day = parts[2];
+    const year = parts[3];
+    const time = parts[4];
+
+    const formattedDate = `${month} ${day} ${year}, ${time}`;
+    return formattedDate;
   };
 
   return (

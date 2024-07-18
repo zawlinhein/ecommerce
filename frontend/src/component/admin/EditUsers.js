@@ -8,6 +8,7 @@ import EditRole from "./EditRole";
 
 const EditUsers = () => {
   const allUsersData = useSelector(allUsers);
+  console.log(allUsersData);
   const dispatch = useDispatch();
   const [isConfirmBoxOpen, setIsConfirmBoxOpen] = useState(null);
 

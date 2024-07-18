@@ -29,8 +29,8 @@ const AdminDashboard = () => {
     setIsConfirmBoxOpen(0);
   };
 
-  const handleEdit = (id) => {
-    setEditId(id);
+  const handleEdit = (_id) => {
+    setEditId(_id);
   };
 
   return (
@@ -38,25 +38,24 @@ const AdminDashboard = () => {
       <table className="product-table container mx-auto mt-5 rounded-lg shadow-lg shadow-gray-200">
         <tbody>
           {productList.map((item) =>
-            editId === item.id ? (
+            editId === item._id ? (
               <Edit
                 title={item.title}
                 stock={item.stock}
                 price={item.price}
                 setId={setEditId}
-                id={item.id}
                 _id={item._id}
-                key={item.id}
+                key={item._id}
               />
             ) : (
-              <tr key={item.id}>
+              <tr key={item._id}>
                 <td>{item.title}</td>
                 <td className="input-column">{item.stock}</td>
                 <td className="price-column">{item.price}</td>
                 <td className="action-column">
                   <button
                     className="action-button"
-                    onClick={() => handleEdit(item.id)}
+                    onClick={() => handleEdit(item._id)}
                   >
                     Edit
                   </button>
@@ -82,7 +81,7 @@ const AdminDashboard = () => {
   );
 };
 
-const Edit = ({ title, stock, price, setId, id, _id }) => {
+const Edit = ({ title, stock, price, setId, _id }) => {
   const [editStock, setEditStock] = useState(stock);
   const [editPrice, setEditPrice] = useState(price);
   const stockRef = useRef();

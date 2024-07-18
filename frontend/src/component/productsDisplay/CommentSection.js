@@ -1,49 +1,67 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
+import { currentUser } from "../slice/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addReview } from "../slice/productSlice";
 
-const CommentSection = () => {
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      username: "JohnDoe",
-      rating: 4,
-      text: "Great app, really useful!",
-    },
-    {
-      id: 2,
-      username: "JaneSmith",
-      rating: 5,
-      text: "Excellent app with lots of features.",
-    },
-    {
-      id: 3,
-      username: "Alex123",
-      rating: 3,
-      text: "Good, but could use some improvements.",
-    },
-  ]);
+const CommentSection = ({ reviews, _id }) => {
   const [newComment, setNewComment] = useState("");
   const [newRating, setNewRating] = useState(0);
-  const [username, setUsername] = useState("");
 
-  const handleAddReview = () => {
-    if (newComment && newRating && username) {
-      const newReview = {
-        id: Date.now(),
-        username,
-        rating: newRating,
-        text: newComment,
-      };
-      setReviews([...reviews, newReview]);
-      setNewComment("");
-      setNewRating(0);
-      setUsername("");
-    }
+  const dispatch = useDispatch();
+
+  const userData = useSelector(currentUser);
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const parts = date.toString().split(" ");
+    const month = parts[1];
+    const day = parts[2];
+    const year = parts[3];
+    const time = parts[4];
+
+    const formattedDate = `${month} ${day} ${year}, ${time}`;
+    return formattedDate;
   };
 
-  const averageRating = (
-    reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
-  ).toFixed(1);
+  const getCurrentDate = () => {
+    const date = new Date();
+    return date.toISOString();
+  };
+
+  const reviewData = {
+    date: getCurrentDate(),
+    rating: newRating,
+    comment: newComment,
+    reviewerName: userData.username,
+  };
+  const handleAddReview = () => {
+    axios
+      .put(`http://localhost:8000/add-review/${_id}`, reviewData)
+      .then((res) => {
+        dispatch(addReview({ _id, reviewData }));
+        console.log(res.data);
+      })
+      .catch((err) => {
+        alert("Fail to add review");
+        console.log(err);
+      });
+    setNewComment("");
+    setNewRating(0);
+  };
+
+  const sortedReviews = reviews
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const averageRating =
+    reviews.length > 0
+      ? (
+          reviews.reduce((sum, review) => sum + review.rating, 0) /
+          reviews.length
+        ).toFixed(1)
+      : 0;
 
   return (
     <div className="mt-10">
@@ -70,8 +88,8 @@ const CommentSection = () => {
       </div>
 
       <div className="space-y-4 mb-6">
-        {reviews.map((review) => (
-          <div key={review.id} className="border p-4 rounded-lg shadow-sm">
+        {sortedReviews.map((review, index) => (
+          <div key={index} className="border p-4 rounded-lg shadow-sm">
             <div className="flex items-center mb-2">
               <div className="flex items-center">
                 {Array.from({ length: 5 }, (_, index) => (
@@ -85,28 +103,20 @@ const CommentSection = () => {
                   />
                 ))}
               </div>
-              <p className="ml-2 text-sm text-gray-600">@{review.username}</p>
+              <p className="ml-2 text-sm text-gray-600">
+                @{review.reviewerName}
+              </p>
             </div>
-            <p>{review.text}</p>
+            <p className="pb-3 text-sm text-gray-500">
+              {formatDate(review.date)}
+            </p>
+            <p>{review.comment}</p>
           </div>
         ))}
       </div>
 
       <div>
         <h3 className="text-xl font-semibold mb-2">Add a Review</h3>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-          className="block w-full mb-2 p-2 border border-gray-300 rounded-md"
-        />
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Write your review here"
-          className="block w-full mb-2 p-2 border border-gray-300 rounded-md"
-        ></textarea>
         <div className="flex items-center mb-2">
           {Array.from({ length: 5 }, (_, index) => (
             <FaStar
@@ -118,9 +128,15 @@ const CommentSection = () => {
             />
           ))}
         </div>
+        <textarea
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Write your review here"
+          className="block w-full mb-2 p-2 border border-gray-300 rounded-md"
+        ></textarea>
         <button
           onClick={handleAddReview}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-2  disabled:opacity-50 disable:cursor-not-allowed"
         >
           Add Review
         </button>

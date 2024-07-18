@@ -17,3 +17,9 @@ class product(BaseModel):
 class update_product(BaseModel):
     price:float=None
     stock:int=None
+
+class review(BaseModel):
+    date:str
+    rating:int
+    comment:str
+    reviewerName:str

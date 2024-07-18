@@ -78,13 +78,13 @@ const Cart = () => {
   };
 
   const removeItem = (itemId) => {
-    const newItemsInCart = itemsInCart.filter((item) => item.id !== itemId);
+    const newItemsInCart = itemsInCart.filter((item) => item._id !== itemId);
     dispatch(updateCart(newItemsInCart));
   };
   return (
     <div className="cart-container">
       {itemsInCart.map((item) => (
-        <div className="cart-item" key={item.id}>
+        <div className="cart-item" key={item._id}>
           <div className="item-details">
             <h3>{item.title}</h3>
             <p>Price: ${item.price}</p>
@@ -94,21 +94,21 @@ const Cart = () => {
           </div>
           <div className="quantity-control">
             <button
-              onClick={() => changeQty("-", item.qty, item.id)}
+              onClick={() => changeQty("-", item.qty, item._id)}
               disabled={item.qty <= 1}
             >
               -
             </button>
             <span>{item.qty}</span>
             <button
-              onClick={() => changeQty("+", item.qty, item.id)}
+              onClick={() => changeQty("+", item.qty, item._id)}
               disabled={item.qty >= item.stock}
             >
               +
             </button>
           </div>
           <p>Total: ${(item.price * item.qty).toFixed(2)}</p>
-          <button onClick={() => removeItem(item.id)}>Remove</button>
+          <button onClick={() => removeItem(item._id)}>Remove</button>
         </div>
       ))}
       <div className="total-price">

@@ -1,6 +1,6 @@
 from fastapi import APIRouter,UploadFile,File,Form
 from schemas.schema import serialize_all,serialize_one
-from models.product import product,update_product
+from models.product import product,update_product,review
 from config.database import collection
 from bson import ObjectId
 import os
@@ -56,12 +56,20 @@ async def delete_product(_id:str):
         "status":"ok"
     }
 
+@router.put("/add-review/{_id}")
+async def add_review(_id:str,review_data:review):
+    review_data=dict(review_data)
+    collection.find_one_and_update({"_id":ObjectId(_id)},{"$push":{"reviews":review_data}})
+    return{
+        "status":"ok"
+    }
+
+
 UPLOAD_FOLDER = "uploads"
 Path(UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
 
 @router.post("/upload")
 async def upload_file(file: UploadFile = File(...),
-    id: int = Form(...),
     title: str = Form(...),
     description: str = Form(...),
     price: float = Form(...),
@@ -69,7 +77,7 @@ async def upload_file(file: UploadFile = File(...),
     sku: str = Form(...),
     category: str = Form(...),
     brand: str = Form(...),
-    rating: float = Form(...)
+    createdAt:str=Form(...)
 ):
 
     file_name=f"{uuid.uuid4()}_{file.filename}"
@@ -77,22 +85,21 @@ async def upload_file(file: UploadFile = File(...),
     with open(file_location, "wb+") as file_object:
         file_object.write(file.file.read())
     file_url = f"http://localhost:8000/{file_location}"
+    
+    product_data_test = {
+            "title":title,
+            "description":description,
+            "price":price,
+            "stock":stock,
+            "images":[file_url],
+            "thumbnail":file_url,
+            "sku":sku,
+            "category":category,
+            "brand":brand,
+            "reviews":[],
+            "meta":{"createdAt":createdAt}
+        }
 
-    product_data = product(
-            id=id,
-            title=title,
-            description=description,
-            price=price,
-            stock=stock,
-            images=[file_url],
-            thumbnail=file_url,
-            sku=sku,
-            category=category,
-            brand=brand,
-            rating=rating
-        )
-
-    product_data=dict(product_data)
-    collection.insert_one(product_data)
+    collection.insert_one(product_data_test)
     return {"filename": file.filename, "path": file_url}
 
