@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import uuid
 from urllib.parse import urlparse
+from typing import Optional
 
 router=APIRouter()
 
@@ -102,4 +103,50 @@ async def upload_file(file: UploadFile = File(...),
 
     collection.insert_one(product_data_test)
     return {"filename": file.filename, "path": file_url}
+
+
+@router.put("/edit-product/{_id}")
+async def edit_product(_id:str,
+    file: Optional[UploadFile] = File(''),
+    title: str = Form(...),
+    description: str = Form(...),
+    sku: str = Form(...),
+    category: str = Form(...),
+    brand: str = Form(...),
+):
+    if file=='':
+            edited_product_data = {
+            "title":title,
+            "description":description,
+            "sku":sku,
+            "category":category,
+            "brand":brand,
+        }
+    else:
+            file_name=f"{uuid.uuid4()}_{file.filename}"
+            file_location = os.path.join(UPLOAD_FOLDER, file_name)  
+            with open(file_location, "wb+") as file_object:
+                file_object.write(file.file.read())
+            file_url = f"http://localhost:8000/{file_location}"
+
+            selected_product=serialize_one(collection.find_one({"_id":ObjectId(_id)}))
+            imagePath=selected_product["thumbnail"]
+            parsed_url=urlparse(imagePath)
+            filename=parsed_url.path.split('/')[-1]
+            file_path=f'uploads/{filename}'
+            if os.path.exists(file_path):
+                os.remove(file_path)
+            edited_product_data = {
+            "title":title,
+            "description":description,
+            "images":[file_url],
+            "thumbnail":file_url,
+            "sku":sku,
+            "category":category,
+            "brand":brand,
+        }
+    
+
+    collection.find_one_and_update({"_id":ObjectId(_id)},{"$set":edited_product_data})
+    return {"status":_id}
 

@@ -1,46 +1,64 @@
 import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-function SelectWithAddOption() {
+const products = [
+  { id: 1, name: "Product 1", image: "https://via.placeholder.com/200" },
+  { id: 2, name: "Product 2", image: "https://via.placeholder.com/200" },
+  { id: 3, name: "Product 3", image: "https://via.placeholder.com/200" },
+  { id: 4, name: "Product 4", image: "https://via.placeholder.com/200" },
+  { id: 5, name: "Product 5", image: "https://via.placeholder.com/200" },
+];
+
+const App = () => {
+  const carouselSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+  };
+
   return (
-    <main class=" bg-white relative overflow-hidden h-screen">
-      <div class="bg-white  flex relative z-20 items-center overflow-hidden">
-        <div class="container mx-auto px-6 flex relative py-16">
-          <div class="sm:w-2/3 lg:w-2/5 flex flex-col relative z-20">
-            <span class="w-20 h-2 bg-gray-800  mb-12"></span>
-            <h1 class="font-bebas-neue uppercase text-6xl sm:text-8xl font-black flex flex-col leading-none text-gray-800">
-              Be on
-              <span class="text-5xl sm:text-7xl">Time</span>
-            </h1>
-            <p class="text-sm sm:text-base text-gray-700">
-              Dimension of reality that makes change possible and
-              understandable. An indefinite and homogeneous environment in which
-              natural events and human existence take place.
-            </p>
-            <div class="flex mt-8">
-              <a
-                href="#"
-                class="uppercase py-2 px-4 rounded-lg bg-pink-500 border-2 border-transparent text-white text-md mr-4 hover:bg-pink-400"
-              >
-                Get started
-              </a>
-              <a
-                href="#"
-                class="uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white text-md"
-              >
-                Read more
-              </a>
-            </div>
-          </div>
-          <div class="hidden sm:block sm:w-1/3 lg:w-3/5 relative">
-            <img
-              src="https://www.tailwind-kit.com/images/object/10.png"
-              class="max-w-xs md:max-w-sm m-auto"
-            />
-          </div>
-        </div>
+    <div>
+      {/* Hero Section */}
+      <div className="bg-gray-200 h-screen flex flex-col items-center justify-center text-center">
+        <h1 className="text-5xl font-bold mb-4">Welcome to Our Shop</h1>
+        <p className="text-lg mb-6">Find the best products for your needs</p>
+        <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+          Shop Now
+        </button>
       </div>
-    </main>
-  );
-}
 
-export default SelectWithAddOption;
+      {/* Product Carousel */}
+      <div className="container mx-auto py-10">
+        <h2 className="text-3xl font-bold text-center mb-8">Top Products</h2>
+        <Slider {...carouselSettings}>
+          {products.map((product) => (
+            <div key={product.id} className="p-4">
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-48 object-cover mb-4"
+                />
+                <h3 className="text-lg font-bold">{product.name}</h3>
+              </div>
+            </div>
+          ))}
+        </Slider>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-6">
+        <div className="container mx-auto text-center">
+          <p>Contact me at: zawlinnheinn@gmail.com</p>
+          <p>&copy; 2024 E-commerce. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
