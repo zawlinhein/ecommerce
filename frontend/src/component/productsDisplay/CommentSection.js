@@ -129,6 +129,7 @@ const CommentSection = ({ reviews, _id }) => {
           ))}
         </div>
         <textarea
+          required
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Write your review here"
@@ -136,7 +137,8 @@ const CommentSection = ({ reviews, _id }) => {
         ></textarea>
         <button
           onClick={handleAddReview}
-          className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-2  disabled:opacity-50 disable:cursor-not-allowed"
+          disabled={!newComment || !newRating}
+          className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-2  disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Add Review
         </button>

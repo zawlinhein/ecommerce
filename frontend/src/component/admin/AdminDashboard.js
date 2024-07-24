@@ -5,6 +5,8 @@ import axios from "axios";
 import { fetchToken } from "../Auth";
 import ConfirmBox from "./ConfirmBox";
 import EditProducts from "./EditProducts";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminDashboard = () => {
   const [editId, setEditId] = useState(-1);
@@ -16,6 +18,18 @@ const AdminDashboard = () => {
   const closeConfirmationBox = () => {
     setIsConfirmBoxOpen(null);
   };
+
+  const toastNoti = (message, type) =>
+    toast[type](message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
 
   const handleConfirm = () => {
     axios
@@ -47,6 +61,7 @@ const AdminDashboard = () => {
                 setId={setEditId}
                 _id={item._id}
                 key={item._id}
+                toastNoti={toastNoti}
               />
             ) : (
               <tr key={item._id} className="border-b">
@@ -87,15 +102,31 @@ const AdminDashboard = () => {
       {editDetails && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-lg w-1/2">
-            <EditProducts _id={editDetails} setEditDetails={setEditDetails} />
+            <EditProducts
+              _id={editDetails}
+              setEditDetails={setEditDetails}
+              toastNoti={toastNoti}
+            />
           </div>
         </div>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
 
-const Edit = ({ title, stock, price, setId, _id }) => {
+const Edit = ({ title, stock, price, setId, _id, toastNoti }) => {
   const [editStock, setEditStock] = useState(stock);
   const [editPrice, setEditPrice] = useState(price);
   const stockRef = useRef();
@@ -122,6 +153,7 @@ const Edit = ({ title, stock, price, setId, _id }) => {
       )
       .then((res) => {
         dispatch(editProduct({ _id, editStock, editPrice }));
+        toastNoti("Product edited successfully!", "success");
       })
       .catch((error) => {
         alert("Failed to update resource. Please try again.");

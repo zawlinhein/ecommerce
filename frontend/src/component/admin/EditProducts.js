@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { allProducts, setProduct } from "../slice/productSlice";
 import InputBox from "./InputBox";
 
-const EditProducts = ({ _id, setEditDetails }) => {
+const EditProducts = ({ _id, setEditDetails, toastNoti }) => {
   const inputRef = useRef();
 
   const products = useSelector(allProducts);
@@ -78,7 +78,7 @@ const EditProducts = ({ _id, setEditDetails }) => {
     e.preventDefault();
     console.log(formData);
     axios
-      .put(`http://localhost:8000/edit-product/${_id}`, formData, {
+      .put(`http://localhost:8000/edit-product-details/${_id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -96,11 +96,13 @@ const EditProducts = ({ _id, setEditDetails }) => {
         };
 
         fetchData();
-        alert("Product added successfully!");
+        console.log("success");
+        toastNoti("Product edited successfully!", "success");
       })
       .catch((error) => {
         console.log(error);
       });
+    setEditDetails(null);
   };
   return (
     <div className="container mx-auto w-full p-4">

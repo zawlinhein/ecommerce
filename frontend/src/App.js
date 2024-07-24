@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { RequireAuth } from "./component/RequireAuth";
 import { validateToken } from "./component/Auth";
 import { setAllUsersInfo, setUserInfo } from "./component/slice/userSlice";
+import ToastNoti from "./component/ToastNoti";
 
 function App() {
   const DetailPage = lazy(() =>
@@ -66,13 +67,15 @@ function App() {
       <NavBar />
       <Suspense fallback={<Loading />}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Test />} />
+          <Route path="/products" element={<Home />} />
           <Route path="/products/:productId" element={<DetailPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/addProduct" element={<AddProduct />} />
-          <Route path="/test" element={<Test />} />
+          <Route path="/test" element={<ToastNoti />} />
+
           <Route
             path="/profile"
             element={

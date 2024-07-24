@@ -12,7 +12,6 @@ app.mount("/uploads", StaticFiles(directory=UPLOAD_FOLDER), name="uploads")
 
 app.include_router(router)
 app.include_router(auth_router)
-app.include_router(category_router,prefix='/cate')
 origins=[
     "http://localhost:3000"
 ]

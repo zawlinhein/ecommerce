@@ -105,8 +105,8 @@ async def upload_file(file: UploadFile = File(...),
     return {"filename": file.filename, "path": file_url}
 
 
-@router.put("/edit-product/{_id}")
-async def edit_product(_id:str,
+@router.put("/edit-product-details/{_id}")
+async def edit_product_details(_id:str,
     file: Optional[UploadFile] = File(''),
     title: str = Form(...),
     description: str = Form(...),

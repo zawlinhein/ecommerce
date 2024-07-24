@@ -4,6 +4,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { cartItems } from "../slice/productSlice";
 import { useSelector } from "react-redux";
 import { currentUser } from "../slice/userSlice";
+import logo from "../noun-shop-6157698.svg";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="flex items-center space-x-6">
           <Link to="/">
-            <img src="" alt="Logo" className="h-10" />
+            <img src={logo} alt="Logo" className="h-10" />
           </Link>
         </div>
         <div className="flex justify-center flex-grow">
@@ -23,6 +24,11 @@ const Navbar = () => {
             <li>
               <Link to="/" className="hover:text-gray-400">
                 Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/products" className="hover:text-gray-400">
+                Products
               </Link>
             </li>
             {userData.role === "admin" && (
