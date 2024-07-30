@@ -42,6 +42,7 @@ function App() {
 
     const checkToken = async () => {
       const data = await validateToken();
+      console.log(data);
       if (data) {
         dispatch(setUserInfo(data));
         if (data.role === "admin") {

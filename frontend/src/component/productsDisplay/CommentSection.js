@@ -64,7 +64,35 @@ const CommentSection = ({ reviews, _id }) => {
       : 0;
 
   return (
-    <div className="mt-10">
+    <div className="mt-1">
+      <div>
+        <h3 className="text-xl font-semibold mb-2">Add a Review</h3>
+        <div className="flex items-center mb-2">
+          {Array.from({ length: 5 }, (_, index) => (
+            <FaStar
+              key={index}
+              onClick={() => setNewRating(index + 1)}
+              className={`h-6 w-6 cursor-pointer ${
+                index < newRating ? "text-yellow-500" : "text-gray-300"
+              }`}
+            />
+          ))}
+        </div>
+        <textarea
+          required
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Write your review here"
+          className="block w-full mb-2 p-2 border border-gray-300 rounded-md"
+        ></textarea>
+        <button
+          onClick={handleAddReview}
+          disabled={!newComment || !newRating}
+          className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-2  disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Add Review
+        </button>
+      </div>
       <h2 className="text-2xl font-bold mb-4">Ratings and Reviews</h2>
 
       <div className="mb-6">
@@ -113,35 +141,6 @@ const CommentSection = ({ reviews, _id }) => {
             <p>{review.comment}</p>
           </div>
         ))}
-      </div>
-
-      <div>
-        <h3 className="text-xl font-semibold mb-2">Add a Review</h3>
-        <div className="flex items-center mb-2">
-          {Array.from({ length: 5 }, (_, index) => (
-            <FaStar
-              key={index}
-              onClick={() => setNewRating(index + 1)}
-              className={`h-6 w-6 cursor-pointer ${
-                index < newRating ? "text-yellow-500" : "text-gray-300"
-              }`}
-            />
-          ))}
-        </div>
-        <textarea
-          required
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Write your review here"
-          className="block w-full mb-2 p-2 border border-gray-300 rounded-md"
-        ></textarea>
-        <button
-          onClick={handleAddReview}
-          disabled={!newComment || !newRating}
-          className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-2  disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Add Review
-        </button>
       </div>
     </div>
   );

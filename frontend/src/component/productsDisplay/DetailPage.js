@@ -35,10 +35,10 @@ const DetailPage = () => {
     );
     if (!productInCart) {
       dispatch(addToCart(selectedProduct));
-      navigate("/");
+      navigate("/products");
     } else {
       alert("Product is already in the cart");
-      navigate("/");
+      navigate("/products");
     }
   };
 
@@ -96,10 +96,6 @@ const DetailPage = () => {
           >
             <BiShoppingBag className="mx-2" />
             Add to cart
-          </button>
-          <button className="flex h-12 w-1/3 items-center justify-center bg-amber-400 duration-100 hover:bg-yellow-300">
-            <AiOutlineHeart className="mx-2" />
-            Wishlist
           </button>
         </div>
       </div>
