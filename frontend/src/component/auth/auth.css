@@ -52,7 +52,6 @@ section {
   display: none;
 }
 
-/* Submit button */
 .auth-button {
   width: 100%;
   padding: 10px;
@@ -65,7 +64,6 @@ section {
   margin-top: 20px;
 }
 
-/* Button hover effect */
 .auth-button:hover {
   background: #4cae4c;
 }

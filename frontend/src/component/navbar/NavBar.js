@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { cartItems } from "../slice/productSlice";
 import { useSelector } from "react-redux";
 import { currentUser } from "../slice/userSlice";
-import logo from "../noun-shop-6157698.svg";
+import logo from "../shop.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const userData = useSelector(currentUser);
   const itemNum = useSelector(cartItems).length;
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
     <nav className="bg-gray-800 text-white shadow-md">
@@ -31,28 +32,47 @@ const Navbar = () => {
                 Products
               </Link>
             </li>
-            {userData.role === "admin" && (
-              <>
-                <li>
-                  <Link to="/admin" className="hover:text-gray-400">
-                    Admin
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/editUsers" className="hover:text-gray-400">
-                    Edit Users
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/addProduct" className="hover:text-gray-400">
-                    Add Product
-                  </Link>
-                </li>
-              </>
-            )}
           </ul>
         </div>
         <div className="flex items-center space-x-6">
+          {userData.role === "admin" && (
+            <li className="relative">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="hover:text-gray-400"
+              >
+                Admin Actions
+              </button>
+              {dropdownOpen && (
+                <ul className="absolute bg-gray-700 text-white mt-2 py-2 rounded shadow-lg">
+                  <li>
+                    <Link
+                      to="/editProducts"
+                      className="block px-4 py-2 hover:bg-gray-600"
+                    >
+                      Edit Products
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/editUsers"
+                      className="block px-4 py-2 hover:bg-gray-600"
+                    >
+                      Edit Users
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/addProduct"
+                      className="block px-4 py-2 hover:bg-gray-600"
+                    >
+                      Add Product
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </li>
+          )}
           {"_id" in userData ? (
             <Link to="/profile" className="hover:text-gray-400">
               Profile

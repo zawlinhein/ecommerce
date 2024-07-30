@@ -2,7 +2,6 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./component/navbar/NavBar";
 import { Suspense, lazy } from "react";
-import Home from "./component/Home";
 import Loading from "./component/Loading";
 import axios from "axios";
 import { setProduct } from "./component/slice/productSlice";
@@ -12,6 +11,8 @@ import { RequireAuth } from "./component/RequireAuth";
 import { validateToken } from "./component/Auth";
 import { setAllUsersInfo, setUserInfo } from "./component/slice/userSlice";
 import ToastNoti from "./component/ToastNoti";
+import HomePage from "./component/admin/HomePage";
+import ProductsPage from "./component/ProductsPage";
 
 function App() {
   const DetailPage = lazy(() =>
@@ -25,7 +26,6 @@ function App() {
   const AdminDashboard = lazy(() => import("./component/admin/AdminDashboard"));
   const AddProduct = lazy(() => import("./component/admin/AddProduct"));
   const EditUsers = lazy(() => import("./component/admin/EditUsers"));
-  const Test = lazy(() => import("./component/admin/Test"));
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -67,8 +67,8 @@ function App() {
       <NavBar />
       <Suspense fallback={<Loading />}>
         <Routes>
-          <Route path="/" element={<Test />} />
-          <Route path="/products" element={<Home />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:productId" element={<DetailPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
@@ -85,7 +85,7 @@ function App() {
             }
           />
           <Route
-            path="/admin"
+            path="/editProducts"
             element={
               <RequireAuth role="admin">
                 <AdminDashboard />

@@ -83,7 +83,12 @@ const Login = () => {
             value={passwd}
             required
           />
-          <button disabled={!passwd && !usrName}>Sign in</button>
+          <button
+            className="px-4 py-2 rounded-md text-white font-semibold bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={!passwd || !usrName}
+          >
+            Sign in
+          </button>
         </form>
       </section>
     </div>

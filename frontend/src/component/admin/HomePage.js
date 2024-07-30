@@ -8,7 +8,7 @@ import ProductCard from "../productsDisplay/ProductCard";
 import { useNavigate } from "react-router-dom";
 import bg from "../bg2.png";
 
-const App = () => {
+const HomePage = () => {
   const navigate = useNavigate();
   const products = useSelector(allProducts);
   const productsWithAverageRating = products.map((product) => ({
@@ -73,4 +73,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default HomePage;

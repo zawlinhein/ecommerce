@@ -174,7 +174,10 @@ const Register = () => {
             <FaInfoCircle />
             Must match the first password input field.
           </p>
-          <button disabled={!validName || !validPw || !validMatch}>
+          <button
+            className="px-4 py-2 rounded-md text-white font-semibold bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={!validName || !validPw || !validMatch}
+          >
             Register
           </button>
         </form>

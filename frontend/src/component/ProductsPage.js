@@ -5,7 +5,7 @@ import SearchBar from "./productsDisplay/SearchBar";
 import ProductCard from "./productsDisplay/ProductCard";
 import ProductFilter from "./productsDisplay/ProductFilter";
 
-const Home = () => {
+const ProductsPage = () => {
   const [searchText, setSearchText] = useState("");
   const [category, setCategory] = useState("");
   const [priceRange, setPriceRange] = useState("");
@@ -67,4 +67,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ProductsPage;
